@@ -75,60 +75,62 @@ export default function UserPage() {
     }
   };
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 p-24 bg-[#111827]">
-      <h1 className="text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text">
-        Export Data to Excel
-      </h1>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
-            <tr className="">
-              <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                ID
-              </th>
-              <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                NAME
-              </th>
-              <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                USERNAME
-              </th>
-              <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                EMAIL
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              user.slice(0, 5).map((product: any) => (
-                <tr className="border-b border-gray-200 dark:border-gray-700" key={product.id}>
-                  <th scope="row" className="px-6 py-4">
-                    {product.id}
+    <DefaultLayout>
+      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+          <h1 className="text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text">
+            Export Data to Excel
+          </h1>
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr className="">
+                  <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    ID
                   </th>
-                  <td className="px-6 py-4">
-                    {product.name}$
-                  </td>
-                  <td className="px-6 py-4">
-                    {product.username}$
-                  </td>
-                  <td className="px-6 py-4">
-                    {product.email} ...
-                  </td>
+                  <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    NAME
+                  </th>
+                  <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    USERNAME
+                  </th>
+                  <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    EMAIL
+                  </th>
                 </tr>
-              ),
-              )
-            }
-          </tbody>
-        </table>
-      </div>
-      <button onClick={() => onGetExporProduct("Product", "ProductExport")} className="group relative h-12 overflow-hidden rounded-md bg-blue-500 px-6 text-neutral-50 transition hover:bg-blue-600">
-        <span className="relative">
-         {loading ? "Loading..." : "Export"}
-        </span>
-        <div className="animate-shine-infinite absolute inset-0 -top-[20px] flex h-[calc(100%+40px)] w-full justify-center blur-[12px]">
-          <div className="relative h-full w-8 bg-white/30">
+              </thead>
+              <tbody>
+                {
+                  user.slice(0, 5).map((product: any) => (
+                    <tr className="border-b border-gray-200 dark:border-gray-700" key={product.id}>
+                      <th scope="row" className="px-6 py-4">
+                        {product.id}
+                      </th>
+                      <td className="px-6 py-4">
+                        {product.name}$
+                      </td>
+                      <td className="px-6 py-4">
+                        {product.username}$
+                      </td>
+                      <td className="px-6 py-4">
+                        {product.email} ...
+                      </td>
+                    </tr>
+                  ),
+                  )
+                }
+              </tbody>
+            </table>
           </div>
-        </div>
-      </button>
-    </main>
+          <button onClick={() => onGetExporProduct("Product", "ProductExport")} className="group relative h-12 overflow-hidden rounded-md bg-blue-500 px-6 text-neutral-50 transition hover:bg-blue-600">
+            <span className="relative">
+            {loading ? "Loading..." : "Export"}
+            </span>
+            <div className="animate-shine-infinite absolute inset-0 -top-[20px] flex h-[calc(100%+40px)] w-full justify-center blur-[12px]">
+              <div className="relative h-full w-8 bg-white/30">
+              </div>
+            </div>
+          </button>
+      </section>
+    </DefaultLayout>
   );
 }
