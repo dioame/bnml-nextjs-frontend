@@ -1,6 +1,6 @@
 import TableComponent from '@/components/TableComponent/TableComponent'
 import ModalComponent from '@/components/ModalComponent/ModalComponent'
-import React,{useRef} from 'react'
+import React from 'react'
 import CurrencyInput from 'react-currency-input-field';
 import Select2 from 'react-select';
 import {
@@ -10,10 +10,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  DatePicker,
-  Select,
-  SelectItem
+  ModalContent,
+  Modal,
+  DatePicker
 } from "@nextui-org/react";
+
 
 
 const table = () => {
@@ -37,7 +38,7 @@ const table = () => {
     {name: "Vacation", uid: "vacation"},
   ];
   
-  var [users, setUsers] = React.useState([
+  const [users, setUsers] = React.useState([
     {
       id: 1,
       name: "Tony Reichert",
@@ -50,20 +51,21 @@ const table = () => {
     },
   ]);
 
+  const [modalTitle, setModalTitle] = React.useState('Modal Title');
 
-  const customModal = {
-    content: () => {
-      const [formData, setFormData] = React.useState({
-        id: 5,
-        name: '',
-        role: '',
-        team: '',
-        status: '',
-        age: '',
-        avatar: '',
-        email: '',
-      });
-
+  
+  const [formData, setFormData] = React.useState({
+    id: 5,
+    name: '',
+    role: '',
+    team: '',
+    status: '',
+    age: '',
+    avatar: '',
+    email: '',
+  });
+ 
+      
       const handleModalSave = () =>{
         const newUser = {
           id: 212,
@@ -82,6 +84,7 @@ const table = () => {
 
       const handleChange = (event:any) => {
         const { name, value } = event.target;
+        
         setFormData((prevState) => ({
           ...prevState,
           [name]: value,
@@ -101,11 +104,36 @@ const table = () => {
         { value: 'slate', label: 'Slate', color: '#253858' },
         { value: 'silver', label: 'Silver', color: '#666666' },
       ];
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();  
+  
+  const handleOpen = () => {
+    onOpen();
 
-      return(
-      <>
+    setModalTitle('Add New');
+  }
+  
+  const handleEditOpen = (user:any) =>{
+    onOpen();
+    setModalTitle('Edit Item');
+    setFormData((prevState) => ({
+      ...prevState,
+      name: user.name,
+      email: user.email,
+    }));
+  }
+
+
+  return (
+    <>
+
+      {/* MODAL */}
+      <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} isDismissable={false}>
+        <ModalContent>
+          {(onClose) => (
+            <>
       <ModalHeader className="flex flex-col gap-1">
-        <h1>Add New</h1>
+        <h1>{modalTitle}</h1>
       </ModalHeader>
       <ModalBody>
           <Input 
@@ -156,9 +184,6 @@ const table = () => {
             options={select2Options}
           />
 
-
-
-
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onPress={handleModalSave}>
@@ -169,32 +194,20 @@ const table = () => {
         </Button>
       </ModalFooter>
       </>
-      );
-    }
-  }
-  
-  const { isOpen, onOpen, onClose } = useDisclosure();  
-  const handleOpen = () => {
-    onOpen();
-  }
-  //end for modal
+          )}
+        </ModalContent>
+      </Modal>
 
-
-
-  return (
-    <>
-      <ModalComponent 
-        isOpen={isOpen} 
-        onClose={onClose}
-        CustomModalContent={customModal.content}
-      />
+      {/* END MODAL */}
       
       <TableComponent  
         columns={columns} 
         statusOptions={statusOptions} 
         users={users}  
         onAddNew={handleOpen}
-        onEditNew={handleOpen}
+        onEditNew={(user:any)=>{
+          handleEditOpen(user)
+        }}
       />
     </>
   )

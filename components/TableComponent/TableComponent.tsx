@@ -152,7 +152,7 @@ export default function TableComponent(
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onPress={() => onEditNew()}>Edit</DropdownItem>
+                <DropdownItem onPress={() => onEditNew(user)}>Edit</DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
