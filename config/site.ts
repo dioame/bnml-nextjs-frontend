@@ -25,8 +25,8 @@ export const siteConfig = {
       href: "/about",
     },
     {
-      label: "Test",
-      href: "/test",
+      label: "Table",
+      href: "/table",
     },
     {
       label: "User",
