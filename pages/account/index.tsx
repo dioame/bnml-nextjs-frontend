@@ -30,7 +30,7 @@ export async function getServerSideProps(context: any) {
   };
 }
 
-export default function AboutPage({ session }: any) {
+export default function AccountPage({ session }: any) {
   return (
 
     <DefaultLayout>
