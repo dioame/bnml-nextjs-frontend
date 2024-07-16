@@ -3,7 +3,7 @@ import DefaultLayout from "@/layouts/default";
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from "next-auth";
 import { signOut } from 'next-auth/react';
-import {User,Image} from "@nextui-org/react";
+import { User } from "@nextui-org/react";
 
 export async function getServerSideProps(context: any) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -41,7 +41,7 @@ export default function AboutPage({ session }: any) {
             <>
  
             <User
-            avatarProps={{radius: "lg", src: session.user.image, referrerPolicy:"no-referrer"}}
+            avatarProps={{radius: "lg", src: session.user.image}}
             description={session.user.name}
             name={session.user.email}
           >

@@ -2,7 +2,6 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"
 import { NextAuthOptions } from "next-auth";
-import { GoogleProfile } from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
     // https://next-auth.js.org/configuration/providers/oauth
@@ -28,7 +27,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials:any){
                 const user = {email: "admin", password: "password"}
                 if(credentials?.email === user.email && credentials?.password == user.password){
-                    return user
+                    return user as any
                 }else{
                     return null
                 }
