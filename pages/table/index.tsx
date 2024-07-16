@@ -12,7 +12,10 @@ import {
   ModalFooter,
   ModalContent,
   Modal,
-  DatePicker
+  DatePicker,
+  Autocomplete,
+  AutocompleteSection,
+  AutocompleteItem
 } from "@nextui-org/react";
 
 
@@ -175,14 +178,20 @@ const table = () => {
             onValueChange={(value, name, values) => console.log(value, name, values)}
           />
 
-        <Select2
-            className="w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground"
-            isClearable={true}
-            isSearchable={true}
-            placeholder="Select Item"
-            name="color"
-            options={select2Options}
-          />
+          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                <Autocomplete 
+                  label="Select an animal" 
+                  className="max-w-xs" 
+                >
+                  {select2Options.map((select2) => (
+                    <AutocompleteItem key={select2.value} value={select2.value}>
+                      {select2.label}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+              </div>
+
+            
 
       </ModalBody>
       <ModalFooter>
