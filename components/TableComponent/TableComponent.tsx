@@ -28,8 +28,6 @@ import {ChevronDownIcon} from "./assets/ChevronDownIcon";
 import {SearchIcon} from "./assets/SearchIcon";
 import {capitalize} from "./assets/utils";
 
-import ModalComponent from '@/components/ModalComponent/ModalComponent'
-
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
   paused: "danger",
