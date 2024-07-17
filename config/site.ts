@@ -21,12 +21,12 @@ export const siteConfig = {
       href: "/blog",
     },
     {
-      label: "About",
-      href: "/about",
+      label: "Account",
+      href: "/account",
     },
     {
-      label: "Test",
-      href: "/test",
+      label: "Table",
+      href: "/table",
     },
     {
       label: "User",

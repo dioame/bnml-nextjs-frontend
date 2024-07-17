@@ -18,16 +18,15 @@ import {
   Pagination,
   Selection,
   ChipProps,
-  SortDescriptor
+  SortDescriptor,
 } from "@nextui-org/react";
 import DefaultLayout from "@/layouts/default";
 
-import {PlusIcon} from "../../components/table/PlusIcon";
-import {VerticalDotsIcon} from "../../components/table/VerticalDotsIcon";
-import {ChevronDownIcon} from "../../components/table/ChevronDownIcon";
-import {SearchIcon} from "../../components/table/SearchIcon";
-import {columns, users, statusOptions} from "../../components/table/data";
-import {capitalize} from "../../components/table/utils";
+import {PlusIcon} from "./assets/PlusIcon";
+import {VerticalDotsIcon} from "./assets/VerticalDotsIcon";
+import {ChevronDownIcon} from "./assets/ChevronDownIcon";
+import {SearchIcon} from "./assets/SearchIcon";
+import {capitalize} from "./assets/utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -37,9 +36,26 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
-type User = typeof users[0];
 
-export default function App() {
+export default function TableComponent(
+  { columns,
+    statusOptions,
+    users,
+    onAddNew,
+    onEditNew
+  } : 
+  {
+    columns:any,
+    statusOptions:any,
+    users:any,
+    onAddNew:any,
+    onEditNew:any
+  }
+) {
+
+  //init
+  type User = typeof users[0];
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -57,7 +73,7 @@ export default function App() {
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column:any) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -134,8 +150,7 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem onPress={() => onEditNew(user)}>Edit</DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -177,6 +192,8 @@ export default function App() {
     setPage(1)
   },[])
 
+
+
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -205,7 +222,7 @@ export default function App() {
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
               >
-                {statusOptions.map((status) => (
+                {statusOptions.map((status:any) => (
                   <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
                   </DropdownItem>
@@ -226,14 +243,14 @@ export default function App() {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.map((column) => (
+                {columns.map((column:any) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
+            <Button color="primary" endContent={<PlusIcon />} onPress={() => onAddNew()}>
               Add New
             </Button>
           </div>
@@ -293,8 +310,6 @@ export default function App() {
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
-  
-
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -316,7 +331,7 @@ export default function App() {
             onSortChange={setSortDescriptor}
           >
             <TableHeader columns={headerColumns}>
-              {(column) => (
+              {(column:any) => (
                 <TableColumn
                   key={column.uid}
                   align={column.uid === "actions" ? "center" : "start"}
