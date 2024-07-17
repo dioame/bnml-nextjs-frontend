@@ -1,6 +1,9 @@
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 
+import { useSession, signIn, signOut } from 'next-auth/react';
+
+
 export default function DocsPage() {
   return (
     <DefaultLayout>
