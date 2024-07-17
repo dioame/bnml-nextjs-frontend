@@ -1,10 +1,9 @@
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials"
-import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import axios from 'axios';
 
-export const authOptions: NextAuthOptions = {
-    // https://next-auth.js.org/configuration/providers/oauth
+const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -13,27 +12,100 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: {
-                    label: "Username:",
-                    type: "text",
-                    placeholder:"your username"
-                },
-                password: {
-                    label: "Password:",
-                    type: "password",
-                    placeholder:"your password"
-                }
+                email: { label: "Username:", type: "text", placeholder: "your username" },
+                password: { label: "Password:", type: "password", placeholder: "your password" }
             },
-            async authorize(credentials:any){
-                const user = {email: "admin", password: "password"}
-                if(credentials?.email === user.email && credentials?.password == user.password){
-                    return user as any
-                }else{
-                    return null
+            async authorize(credentials:any) {
+                try {
+                    const loginResponse = await axios.post(`${process.env.API_URL}/api/v1/staff/login`, {
+                        email: credentials.email,
+                        password: credentials.password
+                    });
+
+                    const { status, token } = loginResponse.data;
+
+                    if (status === 'success' && token) {
+                        const userInfoResponse = await axios.get(`${process.env.API_URL}/api/v1/staff/user/email/${credentials.email}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+
+                        const userData = userInfoResponse.data;
+                        userData.data.token = token;
+
+                        if (userData) {
+                            return userData.data;
+                        }
+                    }
+
+                    return null;
+
+                } catch (error) {
+                    console.error("Error authorizing user:", error);
+                    return null;
                 }
             }
         })
     ],
-  }
+    callbacks: {
+        async signIn({ user, account, credentials }:any) {
+            if (account.provider === 'google') {
+                try {
+                    const loginResponse = await axios.post(`${process.env.API_URL}/api/v1/staff/user/login/pairing`, {
+                        email: user.email,
+                        pair_token: process.env.GOOGLE_NEXTJS_LARAVEL_TOKEN
+                    });
 
-export default NextAuth(authOptions)
+                    const { status, token } = loginResponse.data;
+                    if (status === 'success' && token) {
+                        const userInfoResponse = await axios.get(`${process.env.API_URL}/api/v1/staff/user/email/${user.email}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+
+                        
+                        const userData = userInfoResponse.data;
+                        userData.data.token = token;
+
+                        if (userData) {
+                            // return userData.data;
+                            user.id = userData.data.id;
+                            user.token = userData.data.token;
+                            user.firstname = userData.data?.firstname;
+                            user.middlename = userData.data?.middlename;
+                            user.lastname = userData.data?.lastname;
+
+                            return true;
+                        }
+                    }
+                    return null;
+                } catch (error) {
+                    console.error("Error during Google sign-in:", error);
+                    return false;
+                }
+            }
+
+            return true;
+        },
+        async jwt({ token, user, credentials }:any) {
+            console.log(credentials)
+            if (user) {
+                token.id = user.id;
+                token.token = user.token;
+                token.firstname = user?.firstname;
+                token.middlename = user?.middlename;
+                token.lastname = user?.lastname;
+            }
+            return token;
+        },
+        async session({ session, token }:any) {
+            session.user.token_id = token.id; //murag need ni sya nga e refer ang token.id kay ambot mo work sya pag naa ni pag wala d mo trigger ang session bosit
+            session.user.token = token.token;
+            session.user.firstname = token.firstname;
+            session.user.middlename = token.middlename;
+            session.user.lastname = token.lastname;
+            return session;
+        }
+    }
+};
+
+
+export default NextAuth(authOptions);

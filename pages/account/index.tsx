@@ -1,36 +1,28 @@
-import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from "next-auth";
-import { signOut } from 'next-auth/react';
 import { User } from "@nextui-org/react";
+import { signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
-export async function getServerSideProps(context: any) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+export async function getServerSideProps(context:any) {
+  const session = await getSession(context);
 
-  // Ensure session.user is defined and set default values if necessary
-
-  if (session && session.user) {
-    if (session.user.email === undefined) {
-      session.user.email = null;
-    }
-    if (session.user.image === undefined) {
-      session.user.image = null;
-    }
-
-    if (session.user.name === undefined) {
-      session.user.name = session.user.email;
-    }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
   }
 
   return {
-    props: {
-      session,
-    },
+    props: { session },
   };
 }
 
 export default function AccountPage({ session }: any) {
+  // console.log(session);
   return (
 
     <DefaultLayout>
@@ -42,8 +34,9 @@ export default function AccountPage({ session }: any) {
  
             <User
             avatarProps={{radius: "lg", src: session.user.image}}
-            description={session.user.name}
-            name={session.user.email}
+            description={session.user.email}
+  
+            name={`${session.user.firstname} ${session.user.middlename ? session.user.middlename.charAt(0) + '.' : ''} ${session.user.lastname}`}
           >
             {session.user.email}
           </User>
