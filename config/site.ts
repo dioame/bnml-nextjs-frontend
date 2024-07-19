@@ -1,37 +1,101 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + NextUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "BNML (Balanghay Nine Masonic Lodge) 493",
+  description: "BNML (Balanghay Nine Masonic Lodge) 493",
   navItems: [
     {
-      label: "Home",
+      label: "Dashboard",
       href: "/",
+      key: "dashboard"
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Meetings",
+      href: "/meetings",
+      key: "meetings"
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Installations",
+      href: "/installations",
+      key: "installations"
     },
     {
-      label: "Blog",
-      href: "/blog",
+      label: "Tribute",
+      href: "/flag_tribute",
+      key: "flag_tribute"
     },
     {
-      label: "Account",
-      href: "/account",
+      label: "Directories",
+      key: "directories",
+      dropDownItems: [
+        {
+          label: "Photo Documentations",
+          href: "/photodocs",
+          description: "Meetings, Installation, and Etc.",
+          key: "photodocs"
+        },
+        {
+          label: "Minutes/Proceedings",
+          href: "/minutes",
+          description: "Minutes/Proceedings",
+          key: "minutes"
+        },
+        {
+          label: "Downloadable Forms",
+          href: "/downloadables",
+          description: "Downloadables",
+          key: "downloadables"
+        },
+        {
+          label: "Financial Report",
+          href: "/financial-report",
+          description: "Financial Report",
+          key: "financal-report"
+        },
+      ]
     },
     {
-      label: "Table",
-      href: "/table",
+      label: "Master Records",
+      key: "master-records",
+      dropDownItems: [
+        {
+          label: "Activities",
+          href: "/lib-activities",
+          description: "Library of Activities",
+          key: "lib_activities",
+        },
+        {
+          label: "Directories",
+          href: "/lib-directories",
+          description: "Library of Directories",
+          key: "lib_directories"
+        },
+        {
+          label: "Installations",
+          href: "/lib-installations",
+          description: "Library of Directories",
+          key: "lib_installations"
+        },
+        {
+          label: "Officers",
+          href: "/officers",
+          description: "Officers",
+          key: "officers"
+        },
+        {
+          label: "Members",
+          href: "/members",
+          description: "Officers",
+          key: "officers"
+        },
+        {
+          label: "Petitioners",
+          href: "/petitioners",
+          description: "Petitioners",
+          key: "petitioners"
+        },
+      ]
     },
-    {
-      label: "User",
-      href: "/user",
-    }
   ],
   navMenuItems: [
     {
