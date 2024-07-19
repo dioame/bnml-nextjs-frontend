@@ -36,6 +36,7 @@ import {
 import { Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Image, User, DropdownSection } from "@nextui-org/react";
 import { useSession,signOut } from 'next-auth/react';
 
+
 export const Navbar = () => {
   const { data: session, status } = useSession();
   const userData = {
@@ -55,6 +56,12 @@ export const Navbar = () => {
     home: <Home/>,
   };
 
+  const customIcons = (
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 17l5-5-5-5v10z" fill="#000"/>
+</svg>
+  );
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
     <NavbarContent className="hidden sm:flex gap-4" justify="start">
@@ -66,7 +73,16 @@ export const Navbar = () => {
               alt="BNML Logo"
               src="/assets/bnml_logo.jpg"
             />
-              <p className="font-bold text-inherit">BNML IS</p>
+              <p className="font-bold text-inherit">
+              <svg width="200" height="50" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="100%" height="100%" fill="#f5f5f5"/>
+                  
+                  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="40" fill="#333" text-anchor="middle" alignment-baseline="central">
+                    BNML
+                  </text>
+                  <line x1="20" y1="80" x2="180" y2="80" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+                </svg>
+              </p>
             </NextLink>
           </NavbarBrand>
           
@@ -103,6 +119,7 @@ export const Navbar = () => {
                     key={dropdownitem.key}
                     description={dropdownitem.description}
                     // startContent={icons.activity}
+                    startContent={customIcons}
                     as={Link}
                     href={dropdownitem.href}
                     >
