@@ -5,56 +5,758 @@ import { button as buttonStyles } from "@nextui-org/theme";
 
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+import { CheckIcon, FileOpenIcon, GithubIcon, Home, XmarkIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
+import {  Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+
+// CALENDAR
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import { useState } from "react";
+
+
 
 export default function IndexPage() {
+
+  const [events, setEvent] = useState([
+    { id:1, 
+      title: 'Meeting', 
+      start: '2024-07-10', 
+      end: '2024-07-11', 
+      // interactive:true, 
+      editable:true,
+      // url:"https://fullcalendar.io/docs/event-parsing" 
+    },
+    { id:2, 
+      title: 'Meetingx', 
+      start: '2024-07-10', 
+      end: '2024-07-16', 
+      editable:true ,
+      backgroundColor: 'red',
+    },
+
+  ]);
+
+  function addEvent(){
+    setEvent([
+      ...events,
+      {
+        id: 3,
+        title: 'Meeting123',
+        start: '2024-07-10',
+        end: '2024-07-16',
+        editable: true,
+        backgroundColor: 'red',
+      }
+    ]);
+  }
+
+  // a custom render function
+  function renderEventContent(eventInfo) {
+    return (
+      <>
+        <b>{eventInfo.timeText}</b>
+        <i>{eventInfo.event.title}</i>
+      </>
+    )
+  }
+
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <h1 className={title()}>Make&nbsp;</h1>
-          <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-          <br />
-          <h1 className={title()}>
-            websites regardless of your design experience.
-          </h1>
-          <h4 className={subtitle({ class: "mt-4" })}>
-            Beautiful, fast and modern React UI library.
-          </h4>
-        </div>
+    <div className="grid grid-cols-3 gap-5">
+      <div className="col-span-3">
+        <Card>
+          <CardBody>
+            <p>Welcome to Balanghay Nine Masonic Lodge 493 Information System.</p>
+          </CardBody>
+        </Card>
+      </div>
 
-        <div className="flex gap-3">
-          <Link
-            isExternal
-            className={buttonStyles({
-              color: "primary",
-              radius: "full",
-              variant: "shadow",
-            })}
-            href={siteConfig.links.docs}
+      <div className="col-span-2">
+      <Table aria-label="Example static collection table"
+            topContent="Overall Summary"
           >
-            Documentation
-          </Link>
-          <Link
-            isExternal
-            className={buttonStyles({ variant: "bordered", radius: "full" })}
-            href={siteConfig.links.github}
-          >
-            <GithubIcon size={20} />
-            GitHub
-          </Link>
-        </div>
+             <TableHeader>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Stated Meeting</TableColumn>
+                <TableColumn>Stated Meeting</TableColumn>
+                <TableColumn>Installation</TableColumn>
+                <TableColumn>Flag Tribute</TableColumn>
+                <TableColumn>Total Points</TableColumn>
+             </TableHeader>
+             <TableBody>
 
-        <div className="mt-8">
-          <Snippet hideCopyButton hideSymbol variant="bordered">
-            <span>
-              Get started by editing{" "}
-              <Code color="primary">pages/index.tsx</Code>
-            </span>
-          </Snippet>
-        </div>
-      </section>
+              <TableRow key="3">
+                <TableCell>Tony G</TableCell>
+                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div>
+                </TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>33</TableCell>
+                <TableCell>100</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+             </TableBody>
+
+          </Table>
+          <br/>
+          <Table aria-label="Example static collection table"
+            topContent="Overall Summary"
+          >
+             <TableHeader>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Stated Meeting</TableColumn>
+                <TableColumn>Stated Meeting</TableColumn>
+                <TableColumn>Installation</TableColumn>
+                <TableColumn>Flag Tribute</TableColumn>
+                <TableColumn>Total Points</TableColumn>
+             </TableHeader>
+             <TableBody>
+
+              <TableRow key="3">
+                <TableCell>Tony G</TableCell>
+                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div>
+                </TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>33</TableCell>
+                <TableCell>100</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+             </TableBody>
+
+          </Table>
+      </div>
+
+      
+
+      <div className="col-span-1">
+          <Table isStriped aria-label="Example static collection table"
+            topContent="Worshipper Master's Corner"
+          >
+          <TableHeader>
+            <TableColumn>NAME</TableColumn>
+            <TableColumn>PATH</TableColumn>
+          </TableHeader>
+          <TableBody>
+            <TableRow key="1">
+              <TableCell>Downloadable Forms</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="2">
+            <TableCell>File 2</TableCell>
+            <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="3">
+            <TableCell>File 3</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+            <TableCell>File 4</TableCell>
+              <TableCell>
+              <Chip
+                variant="shadow"
+                classNames={{
+                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                  content: "drop-shadow shadow-black text-white",
+                }}
+              >
+                <FileOpenIcon/>
+              </Chip>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="col-span-3">
+        
+          <Table aria-label="Example static collection table"
+            topContent="Stated Meeting Ranking"
+          >
+          <TableHeader>
+            <TableColumn>NAME</TableColumn>
+            <TableColumn>Jan</TableColumn>
+            <TableColumn>Feb</TableColumn>
+            <TableColumn>Mar</TableColumn>
+            <TableColumn>Apr</TableColumn>
+            <TableColumn>May</TableColumn>
+            <TableColumn>Jun</TableColumn>
+            <TableColumn>Jul</TableColumn>
+            <TableColumn>Aug</TableColumn>
+            <TableColumn>Sep</TableColumn>
+            <TableColumn>Oct</TableColumn>
+            <TableColumn>Nov</TableColumn>
+            <TableColumn>Dec</TableColumn>
+            <TableColumn>Points</TableColumn>
+          </TableHeader>
+          <TableBody>
+            <TableRow key="1">
+              <TableCell>Tony Reichert</TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell>12</TableCell>
+            </TableRow>
+            <TableRow key="2">
+              <TableCell>Zoey Lang</TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell>12</TableCell>
+            </TableRow>
+            <TableRow key="3">
+              <TableCell>Jane Fisher</TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell>12</TableCell>
+            </TableRow>
+            <TableRow key="4">
+              <TableCell>William Howard</TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><XmarkIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell><CheckIcon/></TableCell>
+              <TableCell>12</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="col-span-3">
+        
+        <Table aria-label="Example static collection table"
+          topContent="Special Meeting Ranking"
+        >
+        <TableHeader>
+          <TableColumn>NAME</TableColumn>
+          <TableColumn>Jan</TableColumn>
+          <TableColumn>Feb</TableColumn>
+          <TableColumn>Mar</TableColumn>
+          <TableColumn>Apr</TableColumn>
+          <TableColumn>May</TableColumn>
+          <TableColumn>Jun</TableColumn>
+          <TableColumn>Jul</TableColumn>
+          <TableColumn>Aug</TableColumn>
+          <TableColumn>Sep</TableColumn>
+          <TableColumn>Oct</TableColumn>
+          <TableColumn>Nov</TableColumn>
+          <TableColumn>Dec</TableColumn>
+          <TableColumn>Points</TableColumn>
+        </TableHeader>
+        <TableBody>
+          <TableRow key="1">
+            <TableCell>Tony Reichert</TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell>12</TableCell>
+          </TableRow>
+          <TableRow key="2">
+            <TableCell>Zoey Lang</TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell>12</TableCell>
+          </TableRow>
+          <TableRow key="3">
+            <TableCell>Jane Fisher</TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell>12</TableCell>
+          </TableRow>
+          <TableRow key="4">
+            <TableCell>William Howard</TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><XmarkIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell><CheckIcon/></TableCell>
+            <TableCell>12</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+
+
+    <div className="col-span-3">
+        
+        <Table aria-label="Example static collection table"
+          topContent="Installations"
+        >
+        <TableHeader>
+          <TableColumn>NAME</TableColumn>
+          <TableColumn>Installations</TableColumn>
+        </TableHeader>
+        <TableBody>
+          <TableRow key="1">
+            <TableCell>Tony Reichert</TableCell>
+            <TableCell>
+              
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Balanghay Nine Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+            
+            </TableCell>
+          </TableRow>
+          <TableRow key="2">
+            <TableCell>Zoey Lang</TableCell>
+            <TableCell>
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+            </TableCell>
+          </TableRow>
+          <TableRow key="3">
+            <TableCell>Jane Fisher</TableCell>
+            <TableCell>
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+            </TableCell>
+          </TableRow>
+          <TableRow key="4">
+            <TableCell>William Howard</TableCell>
+            <TableCell>
+            <Chip
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+            >
+              Butuan Masonic Lodge
+            </Chip>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+
+      <div className="col-span-3">
+      
+        <Card>
+          <CardHeader>
+            Calendar of Activities
+          </CardHeader>
+          <CardBody>
+
+      <FullCalendar 
+        plugins={[dayGridPlugin,timeGridPlugin,listPlugin]}
+        initialView='dayGridMonth'
+        events={events}
+        eventContent={renderEventContent}
+        height={500}
+        eventClick={(e)=>{
+          console.log(e.event.id);
+        }}
+        customButtons={{
+          myCustomButton: {
+            text: 'Add Event',
+            click: addEvent
+          }
+        }}
+        headerToolbar={{
+          left: 'prev,next myCustomButton',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' 
+        }}
+      />
+          </CardBody>
+        </Card>
+      
+      </div>
+
+     
+    </div>
     </DefaultLayout>
   );
 }

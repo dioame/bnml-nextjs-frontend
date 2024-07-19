@@ -6,16 +6,19 @@ import { useRouter } from "next/router";
 
 import { fontSans, fontMono } from "@/config/fonts";
 import "@/styles/globals.css";
+import { SessionProvider } from 'next-auth/react';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   return (
+    <SessionProvider session={pageProps.session}>
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider>
         <Component {...pageProps} />
       </NextThemesProvider>
     </NextUIProvider>
+    </SessionProvider>
   );
 }
 
