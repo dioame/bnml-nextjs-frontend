@@ -47,6 +47,12 @@ export const siteConfig = {
           key: "downloadables"
         },
         {
+          label: "Grand Lodge Issuances",
+          href: "/issuances",
+          description: "Grand Lodge Issuances/memos",
+          key: "issusances"
+        },
+        {
           label: "Financial Report",
           href: "/financial-report",
           description: "Financial Report",
