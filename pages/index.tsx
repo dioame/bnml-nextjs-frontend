@@ -5,7 +5,7 @@ import { button as buttonStyles } from "@nextui-org/theme";
 
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
-import { CheckIcon, FileOpenIcon, GithubIcon, Home, XmarkIcon } from "@/components/icons";
+import { CheckIcon, FileOpenIcon, GithubIcon, Home, XmarkIcon,SparklesIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import {  Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
@@ -15,6 +15,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import { useState } from "react";
+import { CircleAnimatedIcon } from "@/components/animatedIcons";
 
 
 
@@ -65,11 +66,14 @@ export default function IndexPage() {
 
   return (
     <DefaultLayout>
+     
     <div className="grid grid-cols-3 gap-5">
       <div className="col-span-3">
         <Card>
-          <CardBody>
-            <p>Welcome to Balanghay Nine Masonic Lodge 493 Information System.</p>
+          <CardBody className="flex inline-block">
+     
+          <CircleAnimatedIcon className="inline-block mr-2" />
+          <span>Welcome to Balanghay Nine Masonic Lodge 493 Information System.</span>
           </CardBody>
         </Card>
       </div>
@@ -134,72 +138,100 @@ export default function IndexPage() {
                 <TableCell>90</TableCell>
               </TableRow>
 
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+                <TableCell>54</TableCell>
+                <TableCell>3</TableCell>
+                <TableCell>23</TableCell>
+                <TableCell>90</TableCell>
+              </TableRow>
+
              </TableBody>
 
           </Table>
-          <br/>
-          <Table aria-label="Example static collection table"
-            topContent="Overall Summary"
-          >
-             <TableHeader>
-                <TableColumn>Name</TableColumn>
-                <TableColumn>Stated Meeting</TableColumn>
-                <TableColumn>Stated Meeting</TableColumn>
-                <TableColumn>Installation</TableColumn>
-                <TableColumn>Flag Tribute</TableColumn>
-                <TableColumn>Total Points</TableColumn>
-             </TableHeader>
-             <TableBody>
-
-              <TableRow key="3">
-                <TableCell>Tony G</TableCell>
-                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div>
-                </TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>33</TableCell>
-                <TableCell>100</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-             </TableBody>
-
-          </Table>
+          
       </div>
 
       
@@ -283,78 +315,46 @@ export default function IndexPage() {
               </Chip>
               </TableCell>
             </TableRow>
-            <TableRow key="4">
-            <TableCell>File 4</TableCell>
-              <TableCell>
-              <Chip
-                variant="shadow"
-                classNames={{
-                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                  content: "drop-shadow shadow-black text-white",
-                }}
-              >
-                <FileOpenIcon/>
-              </Chip>
-              </TableCell>
-            </TableRow>
-            <TableRow key="4">
-            <TableCell>File 4</TableCell>
-              <TableCell>
-              <Chip
-                variant="shadow"
-                classNames={{
-                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                  content: "drop-shadow shadow-black text-white",
-                }}
-              >
-                <FileOpenIcon/>
-              </Chip>
-              </TableCell>
-            </TableRow>
-            <TableRow key="4">
-            <TableCell>File 4</TableCell>
-              <TableCell>
-              <Chip
-                variant="shadow"
-                classNames={{
-                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                  content: "drop-shadow shadow-black text-white",
-                }}
-              >
-                <FileOpenIcon/>
-              </Chip>
-              </TableCell>
-            </TableRow>
-            <TableRow key="4">
-            <TableCell>File 4</TableCell>
-              <TableCell>
-              <Chip
-                variant="shadow"
-                classNames={{
-                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                  content: "drop-shadow shadow-black text-white",
-                }}
-              >
-                <FileOpenIcon/>
-              </Chip>
-              </TableCell>
-            </TableRow>
-            <TableRow key="4">
-            <TableCell>File 4</TableCell>
-              <TableCell>
-              <Chip
-                variant="shadow"
-                classNames={{
-                  base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                  content: "drop-shadow shadow-black text-white",
-                }}
-              >
-                <FileOpenIcon/>
-              </Chip>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
+        <br/>
+          <Table aria-label="Example static collection table"
+            topContent="Tribute to the Flag"
+          >
+             <TableHeader>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Points</TableColumn>
+             </TableHeader>
+             <TableBody>
+
+              <TableRow key="3">
+                <TableCell>Tony G</TableCell>
+                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div> </TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+              </TableRow>
+
+              <TableRow key="4">
+                <TableCell>Tony S</TableCell>
+                <TableCell>12</TableCell>
+              </TableRow>
+
+             </TableBody>
+
+          </Table>
       </div>
 
       <div className="col-span-3">
