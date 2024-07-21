@@ -10,19 +10,30 @@ export const siteConfig = {
       key: "dashboard"
     },
     {
-      label: "Meetings",
-      href: "/meetings",
-      key: "meetings"
-    },
-    {
-      label: "Installations",
-      href: "/installations",
-      key: "installations"
-    },
-    {
-      label: "Tribute",
-      href: "/flag_tribute",
-      key: "flag_tribute"
+      label: "Activities",
+      key: "activities",
+      dropDownItems: [
+        {
+          label: "Stated Meeting",
+          href: "/stated_meetings",
+          key: "stated_meeting"
+        },
+        {
+          label: "Special Meeting",
+          href: "/special_meeting",
+          key: "special_meeting"
+        },
+        {
+          label: "Installations",
+          href: "/installations",
+          key: "installations"
+        },
+        {
+          label: "Tribute",
+          href: "/flag_tribute",
+          key: "flag_tribute"
+        },
+      ],
     },
     {
       label: "Directories",
