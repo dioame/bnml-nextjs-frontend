@@ -209,7 +209,7 @@ export const Navbar = () => {
           <DropdownItem key="dashboard" as={Link} href="/">
             Dashboard
           </DropdownItem>
-          <DropdownItem key="settings">Settings</DropdownItem>
+          <DropdownItem key="settings" as={Link} href="/settings">Settings</DropdownItem>
         </DropdownSection>
 
 
