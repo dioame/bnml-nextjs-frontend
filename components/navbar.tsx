@@ -33,9 +33,8 @@ import {
   TagUser,
   Home,
 } from "@/components/icons";
-import { Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Image, User, DropdownSection } from "@nextui-org/react";
+import { Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Image, User, DropdownSection, Skeleton } from "@nextui-org/react";
 import { useSession,signOut } from 'next-auth/react';
-
 
 export const Navbar = () => {
   const { data: session, status } = useSession();
@@ -61,6 +60,7 @@ export const Navbar = () => {
   <path d="M10 17l5-5-5-5v10z" fill="#000"/>
 </svg>
   );
+
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -100,7 +100,7 @@ export const Navbar = () => {
                   endContent={icons.chevron}
                   radius="sm"
                   variant="light"
-                  style={{fontSize:"16px",bottom:"0.5px",color:"hsl(201.82 24.44% 8.82% / 1)"}}
+                  style={{fontSize:"16px",bottom:"0.5px"}}
                 >
                   {item.label}
                 </Button>
@@ -152,6 +152,7 @@ export const Navbar = () => {
         justify="end"
       >
 
+<ThemeSwitch />
       <Dropdown
         showArrow
         radius="sm"
@@ -162,15 +163,29 @@ export const Navbar = () => {
       >
 
       <DropdownTrigger>
+      {userData.email !== undefined
+      ? 
       <User
-        avatarProps={{radius: "lg", src: userData.image}}
-        description={userData.email}
+      avatarProps={{radius: "lg", src: userData.image}}
+      description={userData.email}
+      name={userData.name}
+      style={{cursor:"pointer"}}
+    >
+      {userData.email}
+    </User>
+      :
+      <div className="max-w-[300px] w-full flex items-center gap-3">
+        <div>
+          <Skeleton className="flex rounded-full w-12 h-12"/>
+        </div>  
+        <div className="w-full flex flex-col gap-2">
+          <Skeleton className="h-3 w-3/5 rounded-lg"/>
+          <Skeleton className="h-3 w-4/5 rounded-lg"/>
+        </div>
+      </div>
+      }
+   
 
-        name={userData.name}
-        style={{cursor:"pointer"}}
-      >
-        {userData.email}
-      </User>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Custom item styles"
