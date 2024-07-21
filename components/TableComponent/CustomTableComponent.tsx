@@ -27,6 +27,9 @@ import {VerticalDotsIcon} from "./assets/VerticalDotsIcon";
 import {ChevronDownIcon} from "./assets/ChevronDownIcon";
 import {SearchIcon} from "./assets/SearchIcon";
 import {capitalize} from "./assets/utils";
+import { ExportIcon } from "../icons";
+import * as XLSX from "xlsx";
+
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -37,28 +40,28 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
 
-export default function TableComponent(
-  { columns,
-    statusOptions,
-    users,
+export default function UserTableComponent(
+  { 
+    title,
+    columns,
+    tableDatas,
     onAddNew,
-    onEditNew
-  } : 
-  {
-    columns:any,
-    statusOptions:any,
-    users:any,
-    onAddNew:any,
-    onEditNew:any
-  }
+    onEditNew,
+    onDelete
+  } : any
 ) {
 
+  tableDatas.map((tableData:any)=>{
+    tableData.actions = null;
+  });
+
+
   //init
-  type User = typeof users[0];
+  type TableDatas = typeof tableDatas[0];
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>("all");
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -77,21 +80,16 @@ export default function TableComponent(
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...tableDatas];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
-      );
-    }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [tableDatas, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -103,43 +101,19 @@ export default function TableComponent(
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    return [...items].sort((a: TableDatas, b: TableDatas) => {
+      const first = a[sortDescriptor.column as keyof TableDatas] as number;
+      const second = b[sortDescriptor.column as keyof TableDatas] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
+    const cellValue = data[columnKey as keyof TableDatas];
 
     switch (columnKey) {
-      case "name":
-        return (
-
-          <User
-            avatarProps={{radius: "lg", src: user.avatar}}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
-        );
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
@@ -150,8 +124,8 @@ export default function TableComponent(
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onPress={() => onEditNew(user)}>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onPress={() => onEditNew(data)}>Edit</DropdownItem>
+                <DropdownItem onPress={() => onDelete(data)}>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -193,6 +167,15 @@ export default function TableComponent(
   },[])
 
 
+  function onExport(title:any,worksheetname:any){
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils?.json_to_sheet(tableDatas);
+    XLSX.utils.book_append_sheet(workbook, worksheet, worksheetname);
+    // Save the workbook as an Excel file
+    XLSX.writeFile(workbook, `${title}.xlsx`);
+    
+  }
 
   const topContent = React.useMemo(() => {
     return (
@@ -207,56 +190,20 @@ export default function TableComponent(
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
+           <div className="flex gap-3">
+            <Button  className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" endContent={<ExportIcon />} 
+            onPress={() => onExport(title,`${title} Export`)}>
+              Export
+            </Button>
+          </div>
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status:any) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column:any) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
             <Button color="primary" endContent={<PlusIcon />} onPress={() => onAddNew()}>
               Add New
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
+          <span className="text-default-400 text-small">Total {tableDatas.length} results</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -277,7 +224,7 @@ export default function TableComponent(
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    tableDatas.length,
     hasSearchFilter,
   ]);
 
@@ -311,7 +258,7 @@ export default function TableComponent(
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <DefaultLayout>
+    // <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         {/* <div className="inline-block max-w-lg text-center justify-center"> */}
           <Table
@@ -341,7 +288,7 @@ export default function TableComponent(
                 </TableColumn>
               )}
             </TableHeader>
-            <TableBody emptyContent={"No users found"} items={sortedItems}>
+            <TableBody emptyContent={"No Data found"} items={sortedItems}>
               {(item) => (
                 <TableRow key={item.id}>
                   {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -352,6 +299,6 @@ export default function TableComponent(
           {/* </div> */}
       </section>
       
-    </DefaultLayout>
+    // </DefaultLayout>
   );
 }

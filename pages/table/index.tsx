@@ -1,4 +1,4 @@
-import TableComponent from '@/components/TableComponent/TableComponent'
+import UserTableComponent from '@/components/TableComponent/UserTableComponent'
 import ModalComponent from '@/components/ModalComponent/ModalComponent'
 import React from 'react'
 import CurrencyInput from 'react-currency-input-field';
@@ -209,7 +209,7 @@ const table = () => {
 
       {/* END MODAL */}
       
-      <TableComponent  
+      <UserTableComponent  
         columns={columns} 
         statusOptions={statusOptions} 
         users={users}  

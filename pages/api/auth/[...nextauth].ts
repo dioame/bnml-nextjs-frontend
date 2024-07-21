@@ -17,7 +17,7 @@ const authOptions = {
             },
             async authorize(credentials:any) {
                 try {
-                    const loginResponse = await axios.post(`${process.env.API_URL}/api/v1/staff/login`, {
+                    const loginResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/login`, {
                         email: credentials.email,
                         password: credentials.password
                     });
@@ -25,7 +25,7 @@ const authOptions = {
                     const { status, token } = loginResponse.data;
 
                     if (status === 'success' && token) {
-                        const userInfoResponse = await axios.get(`${process.env.API_URL}/api/v1/staff/user/email/${credentials.email}`, {
+                        const userInfoResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/user/email/${credentials.email}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         });
 
@@ -50,14 +50,14 @@ const authOptions = {
         async signIn({ user, account, credentials }:any) {
             if (account.provider === 'google') {
                 try {
-                    const loginResponse = await axios.post(`${process.env.API_URL}/api/v1/staff/user/login/pairing`, {
+                    const loginResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/user/login/pairing`, {
                         email: user.email,
                         pair_token: process.env.GOOGLE_NEXTJS_LARAVEL_TOKEN
                     });
 
                     const { status, token } = loginResponse.data;
                     if (status === 'success' && token) {
-                        const userInfoResponse = await axios.get(`${process.env.API_URL}/api/v1/staff/user/email/${user.email}`, {
+                        const userInfoResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/user/email/${user.email}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         });
 

@@ -42,7 +42,6 @@ export default function UserPage() {
     fetchData();
   }, []); // Empty dependency array ensures the effect runs only once after the initial render
 
-
   const onGetExporProduct = async (title?: string, worksheetname?: string) => {
     try {
       setLoading(true);

@@ -92,7 +92,7 @@ export const siteConfig = {
           label: "Members",
           href: "/members",
           description: "Officers",
-          key: "officers"
+          key: "members"
         },
         {
           label: "Petitioners",
