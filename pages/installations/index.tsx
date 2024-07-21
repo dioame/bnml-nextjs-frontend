@@ -10,9 +10,9 @@ import { Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, Modal
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 
-export default function LibDirectory() {
-  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_directory`;
-  const _PAGE_NAME = "Directory Libraries";
+export default function() {
+  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/installation`;
+  const _PAGE_NAME = "Installation";
 
   const [activityData, setActivityData] = useState([]);
   const [columTable, setColumnTable] = useState({});
@@ -26,8 +26,6 @@ export default function LibDirectory() {
     name: '',
     description: '',
   });
-
-  const [pageStatus, setPageStatus] = useState(0);
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -60,13 +58,9 @@ export default function LibDirectory() {
       setColumnTable(cols)
       setActivityData(res.data);
       setLoading(false);
-      if(res.data.data){
-        setPageStatus(1);
-      }
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
-      setPageStatus(-1)
     }
   };
 
@@ -158,57 +152,6 @@ export default function LibDirectory() {
     
   };
 
-
-
-  console.log(pageStatus);
-  
-  const renderComponent = () => {
-    if (pageStatus == 1) {
-      return (
-        <CustomTableComponent 
-        title="activity"
-        tableDatas={activityData.data}
-        columns={columTable}
-        onAddNew={()=>{ handleOpen() }}
-        onEditNew={(data:any)=>{ handleEditOpen(data) }}
-        onDelete={(data:any)=>{ handleDelete(data)}}
-        />
-      )
-    } else if (pageStatus == 0) {
-      return (
-        <Card className="w-[200px] space-y-5 p-4" radius="lg">
-          <Skeleton className="rounded-lg">
-            <div className="h-24 rounded-lg bg-default-300"></div>
-          </Skeleton>
-          <div className="space-y-3">
-            <Skeleton className="w-3/5 rounded-lg">
-              <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
-            </Skeleton>
-            <Skeleton className="w-4/5 rounded-lg">
-              <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
-            </Skeleton>
-            <Skeleton className="w-2/5 rounded-lg">  
-              <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
-            </Skeleton>
-          </div>
-        </Card>
-      );
-    } else {
-      return (
-        <>
-        <div className="flex justify-between gap-3 items-end">
-          <div className="flex gap-3">
-            <Button color="primary" endContent={<PlusIcon />} onPress={() => handleOpen()}>
-              Add New
-            </Button>
-          </div>
-      </div>
-      <br/>
-      <p>No Result Found</p>
-      </>);
-    }
-  };
-
   return (
     <DefaultLayout>
 
@@ -255,7 +198,33 @@ export default function LibDirectory() {
         <div className="inline-block max-w-lg text-center justify-center">
             <h1>{_PAGE_NAME}</h1><br/>
             <hr />
-            {renderComponent()}
+
+            {activityData.data 
+              ? 
+                <CustomTableComponent 
+                title="activity"
+                tableDatas={activityData.data}
+                columns={columTable}
+                onAddNew={()=>{ handleOpen() }}
+                onEditNew={(data:any)=>{ handleEditOpen(data) }}
+                onDelete={(data:any)=>{ handleDelete(data)}}
+                />
+                :
+                
+                <>
+                <div className="flex justify-between gap-3 items-end">
+                  <div className="flex gap-3">
+                    <Button color="primary" endContent={<PlusIcon />} onPress={() => handleOpen()}>
+                      Add New
+                    </Button>
+                  </div>
+              </div>
+              <br/>
+              <p>No Result Found</p>
+              </>
+
+              }
+         
         </div>
       </section>
     </DefaultLayout>

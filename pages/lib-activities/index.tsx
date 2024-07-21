@@ -8,24 +8,18 @@ import { useSession,signOut } from 'next-auth/react';
 import CustomTableComponent from "@/components/TableComponent/CustomTableComponent";
 import { Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
-
+import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 
 export default function LibActivities() {
+  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_activities`;
+  const _PAGE_NAME = "Activity Libraries";
 
   const [activityData, setActivityData] = useState([]);
+  const [columTable, setColumnTable] = useState({});
   const [loading, setLoading] = useState(false);
   const [updateDataId, setUpdateDataId] = useState(null);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
-
-  const columns = [
-    {name: "ID", uid: "id", sortable: true},
-    {name: "NAME", uid: "name", sortable: true},
-    {name: "DESCRIPTION", uid: "description", sortable: true},
-    {name: "CREATED_BY", uid: "created_by", sortable: true},
-    {name: "ACTIONS", uid: "actions"},
-  ];
-
   const { isOpen, onOpen, onClose } = useDisclosure();  
   const [modalTitle, setModalTitle] = useState('Modal Title');
   const [formData, setFormData] = useState({
@@ -33,17 +27,46 @@ export default function LibActivities() {
     description: '',
   });
 
+  const [pageStatus, setPageStatus] = useState(0);
+
+  const formatColumns = (res:any) => {
+    const { data } = res;
+    const keys = Object.keys(data[0]);
+    const formattedKeys = keys.map(key => {
+      let name = key
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    
+      return {
+        name: name.toUpperCase(),
+        uid: key,
+        sortable: true
+      };
+    });
+    const finalFormattedKeys = formattedKeys.concat({
+      name: "ACTIONS",
+      uid: "actions"
+    });
+    return finalFormattedKeys;
+  }
  
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_activities`, {
+      const res = await axios.get(_API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      var cols = formatColumns(res.data);
+      setColumnTable(cols)
       setActivityData(res.data);
       setLoading(false);
+      if(res.data.data){
+        setPageStatus(1);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
+      setPageStatus(-1)
     }
   };
 
@@ -78,13 +101,13 @@ export default function LibActivities() {
 
     
     if(updateDataId){
-      var url_api = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_activities/${updateDataId}`;
+      var url_api = `${_API_URL}/${updateDataId}`;
       await axios.put(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
-      var url_api = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_activities`;
+      var url_api = _API_URL;
       await axios.post(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -119,7 +142,7 @@ export default function LibActivities() {
       if (result.isConfirmed) {
         (async () => {
           try {
-            var url_api = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_activities/${data.id}`;
+            var url_api = `${_API_URL}/${data.id}`;
             await axios.delete(url_api, {
               headers: { Authorization: `Bearer ${token}` },
             });
@@ -135,8 +158,60 @@ export default function LibActivities() {
     
   };
 
+
+
+  console.log(pageStatus);
+
+  const renderComponent = () => {
+    if (pageStatus == 1) {
+      return (
+        <CustomTableComponent 
+        title="activity"
+        tableDatas={activityData.data}
+        columns={columTable}
+        onAddNew={()=>{ handleOpen() }}
+        onEditNew={(data:any)=>{ handleEditOpen(data) }}
+        onDelete={(data:any)=>{ handleDelete(data)}}
+        />
+      )
+    } else if (pageStatus == 0) {
+      return (
+        <Card className="w-[200px] space-y-5 p-4" radius="lg">
+          <Skeleton className="rounded-lg">
+            <div className="h-24 rounded-lg bg-default-300"></div>
+          </Skeleton>
+          <div className="space-y-3">
+            <Skeleton className="w-3/5 rounded-lg">
+              <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+            <Skeleton className="w-4/5 rounded-lg">
+              <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+            <Skeleton className="w-2/5 rounded-lg">  
+              <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+            </Skeleton>
+          </div>
+        </Card>
+      );
+    } else {
+      return (
+        <>
+        <div className="flex justify-between gap-3 items-end">
+          <div className="flex gap-3">
+            <Button color="primary" endContent={<PlusIcon />} onPress={() => handleOpen()}>
+              Add New
+            </Button>
+          </div>
+      </div>
+      <br/>
+      <p>No Result Found</p>
+      </>);
+    }
+  };
+
   return (
     <DefaultLayout>
+
 
 <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} isDismissable={false}>
         <ModalContent>
@@ -178,34 +253,9 @@ export default function LibActivities() {
 
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
-          {activityData.data 
-          ? 
-            <CustomTableComponent 
-            title="activity"
-            tableDatas={activityData.data}
-            columns={columns}
-            onAddNew={()=>{ handleOpen() }}
-            onEditNew={(data:any)=>{ handleEditOpen(data) }}
-            onDelete={(data)=>{ handleDelete(data)}}
-            />
-            :
-            <Card className="w-[200px] space-y-5 p-4" radius="lg">
-            <Skeleton className="rounded-lg">
-              <div className="h-24 rounded-lg bg-default-300"></div>
-            </Skeleton>
-            <div className="space-y-3">
-              <Skeleton className="w-3/5 rounded-lg">
-                <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
-              </Skeleton>
-              <Skeleton className="w-4/5 rounded-lg">
-                <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
-              </Skeleton>
-              <Skeleton className="w-2/5 rounded-lg">  
-                <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
-              </Skeleton>
-            </div>
-          </Card>
-          }
+            <h1>{_PAGE_NAME}</h1><br/>
+            <hr />
+            {renderComponent()}
         </div>
       </section>
     </DefaultLayout>
