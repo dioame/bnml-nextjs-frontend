@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useSession,signOut } from 'next-auth/react';
 
 import CustomTableComponent from "@/components/TableComponent/CustomTableComponent";
-import { Autocomplete, AutocompleteItem, Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
+import { CircleAnimatedIcon } from "../animatedIcons";
 
 export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
 
@@ -185,22 +186,27 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       )
     } else if (pageStatus == 0) {
       return (
-        <Card className="w-[200px] space-y-5 p-4" radius="lg">
-          <Skeleton className="rounded-lg">
-            <div className="h-24 rounded-lg bg-default-300"></div>
-          </Skeleton>
-          <div className="space-y-3">
-            <Skeleton className="w-3/5 rounded-lg">
-              <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+        <section className="flex flex-col items-center justify-center gap-4">
+          <br/>
+        <div className="inline-block max-w text-center justify-center">
+          <Card className="w-[200px] space-y-5 p-4 item" radius="lg">
+            <Skeleton className="rounded-lg">
+              <div className="h-24 rounded-lg bg-default-300"></div>
             </Skeleton>
-            <Skeleton className="w-4/5 rounded-lg">
-              <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
-            </Skeleton>
-            <Skeleton className="w-2/5 rounded-lg">  
-              <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
-            </Skeleton>
-          </div>
-        </Card>
+            <div className="space-y-3">
+              <Skeleton className="w-3/5 rounded-lg">
+                <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-4/5 rounded-lg">
+                <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-2/5 rounded-lg">  
+                <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+              </Skeleton>
+            </div>
+          </Card>
+        </div>
+        </section>
       );
     } else {
       return (
@@ -343,14 +349,11 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
           )}
         </ModalContent>
       </Modal>
-
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w text-center justify-center">
-            <h1>{_PAGE_NAME}</h1><br/>
-            <hr />
-            {renderComponent()}
-        </div>
-      </section>
+      <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+        {_PAGE_NAME}
+      </h3>
+          
+      {renderComponent()}
     </DefaultLayout>
   );
 }

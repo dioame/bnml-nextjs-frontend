@@ -197,6 +197,8 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       )
     } else if (pageStatus == 0) {
       return (
+        <section className="flex flex-col items-center justify-center gap-4"><br/>
+        <div className="inline-block max-w text-center justify-center">
         <Card className="w-[200px] space-y-5 p-4" radius="lg">
           <Skeleton className="rounded-lg">
             <div className="h-24 rounded-lg bg-default-300"></div>
@@ -213,6 +215,8 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
             </Skeleton>
           </div>
         </Card>
+        </div>
+        </section>
       );
     } else {
       return (
@@ -340,13 +344,11 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
         </ModalContent>
       </Modal>
 
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w text-center justify-center">
-            <h1>{_PAGE_NAME}</h1><br/>
-            <hr />
+      <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+        {_PAGE_NAME}
+      </h3>
+          
             {renderComponent()}
-        </div>
-      </section>
     </DefaultLayout>
   );
 }

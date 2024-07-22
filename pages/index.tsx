@@ -7,7 +7,7 @@ import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { CheckIcon, FileOpenIcon, GithubIcon, Home, XmarkIcon,SparklesIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
-import {  Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import {  Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@nextui-org/react";
 
 // CALENDAR
 import FullCalendar from '@fullcalendar/react'
@@ -93,8 +93,14 @@ export default function IndexPage() {
              <TableBody>
 
               <TableRow key="3">
-                <TableCell>Tony G</TableCell>
-                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div>
+                <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
+                <TableCell> 98
                 </TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -103,7 +109,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -112,7 +124,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -121,7 +139,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -130,7 +154,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -139,7 +169,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -148,7 +184,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -157,7 +199,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -166,61 +214,13 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
-                <TableCell>12</TableCell>
-                <TableCell>54</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>23</TableCell>
-                <TableCell>90</TableCell>
-              </TableRow>
-
-              <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
                 <TableCell>54</TableCell>
                 <TableCell>3</TableCell>
@@ -328,27 +328,57 @@ export default function IndexPage() {
              <TableBody>
 
               <TableRow key="3">
-                <TableCell>Tony G</TableCell>
-                <TableCell>  <div className="flex items-center justify-center bg-blue-500 text-white font-bold rounded-full w-8 h-8">98</div> </TableCell>
+              <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
+                <TableCell> 89 </TableCell>
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
               </TableRow>
 
               <TableRow key="4">
-                <TableCell>Tony S</TableCell>
+                 <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
                 <TableCell>12</TableCell>
               </TableRow>
 
@@ -380,7 +410,13 @@ export default function IndexPage() {
           </TableHeader>
           <TableBody>
             <TableRow key="1">
-              <TableCell>Tony Reichert</TableCell>
+            <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><CheckIcon/></TableCell>
@@ -396,7 +432,13 @@ export default function IndexPage() {
               <TableCell>12</TableCell>
             </TableRow>
             <TableRow key="2">
-              <TableCell>Zoey Lang</TableCell>
+            <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><XmarkIcon/></TableCell>
               <TableCell><XmarkIcon/></TableCell>
@@ -412,7 +454,13 @@ export default function IndexPage() {
               <TableCell>12</TableCell>
             </TableRow>
             <TableRow key="3">
-              <TableCell>Jane Fisher</TableCell>
+            <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><XmarkIcon/></TableCell>
@@ -428,7 +476,13 @@ export default function IndexPage() {
               <TableCell>12</TableCell>
             </TableRow>
             <TableRow key="4">
-              <TableCell>William Howard</TableCell>
+            <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><CheckIcon/></TableCell>
               <TableCell><CheckIcon/></TableCell>
@@ -470,7 +524,13 @@ export default function IndexPage() {
         </TableHeader>
         <TableBody>
           <TableRow key="1">
-            <TableCell>Tony Reichert</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><CheckIcon/></TableCell>
@@ -486,7 +546,13 @@ export default function IndexPage() {
             <TableCell>12</TableCell>
           </TableRow>
           <TableRow key="2">
-            <TableCell>Zoey Lang</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><XmarkIcon/></TableCell>
             <TableCell><XmarkIcon/></TableCell>
@@ -502,7 +568,13 @@ export default function IndexPage() {
             <TableCell>12</TableCell>
           </TableRow>
           <TableRow key="3">
-            <TableCell>Jane Fisher</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><XmarkIcon/></TableCell>
@@ -518,7 +590,13 @@ export default function IndexPage() {
             <TableCell>12</TableCell>
           </TableRow>
           <TableRow key="4">
-            <TableCell>William Howard</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><CheckIcon/></TableCell>
             <TableCell><CheckIcon/></TableCell>
@@ -549,7 +627,13 @@ export default function IndexPage() {
         </TableHeader>
         <TableBody>
           <TableRow key="1">
-            <TableCell>Tony Reichert</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell>
               
             <Chip
@@ -676,7 +760,13 @@ export default function IndexPage() {
             </TableCell>
           </TableRow>
           <TableRow key="2">
-            <TableCell>Zoey Lang</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell>
             <Chip
               variant="shadow"
@@ -690,7 +780,13 @@ export default function IndexPage() {
             </TableCell>
           </TableRow>
           <TableRow key="3">
-            <TableCell>Jane Fisher</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell>
             <Chip
               variant="shadow"
@@ -704,7 +800,13 @@ export default function IndexPage() {
             </TableCell>
           </TableRow>
           <TableRow key="4">
-            <TableCell>William Howard</TableCell>
+          <TableCell><User   
+                      name="Jane Doe"
+                      description="Product Designer"
+                      avatarProps={{
+                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      }}
+                    /></TableCell>
             <TableCell>
             <Chip
               variant="shadow"
