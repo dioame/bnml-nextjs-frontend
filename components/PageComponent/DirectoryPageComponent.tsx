@@ -2,11 +2,11 @@ import DefaultLayout from "@/layouts/default";
 import axios from 'axios';
 import { useEffect, useMemo, useState } from "react";
 import { useSession,signOut } from 'next-auth/react';
-
 import CustomTableComponent from "@/components/TableComponent/CustomTableComponent";
 import { Autocomplete, AutocompleteItem, Button, Card, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
+import { FileUpload } from 'primereact/fileupload';
 
 export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
 
@@ -22,11 +22,9 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const [modalTitle, setModalTitle] = useState('Modal Title');
   const [pageStatus, setPageStatus] = useState(0);
 
-  const [searchUserTerm, setSearchUserTerm] = useState('');
-  const [searchUserValue, setSearchUserValue] = useState([]);
-
-  const [searchInstallationTerm, setSearchInstallationTerm] = useState('');
-  const [searchInstallationValue, setSearchInstallationValue] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchValue, setSearchValue] = useState([]);
+  const [fileNameInput, setFileNameInput] = useState('');
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -104,27 +102,41 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
 
   const  handleModalSave = async () =>{
 
-    
-    if(updateDataId){
-      var url_api = `${_API_URL}/${updateDataId}`;
-      await axios.put(url_api, formData,{
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    const _formData = new FormData();
 
-    }else{
-      var url_api = _API_URL;
-      await axios.post(url_api, formData,{
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      _formData.append('file_id', formData.lib_directory_id);
+      _formData.append('name', formData.name);
+      _formData.append('description', formData.description);
+      _formData.append('file', formData.file);
 
-    }
+      const url_api = updateDataId 
+        ? `${_API_URL}/${updateDataId}` 
+        : _API_URL;
+
+      const method = updateDataId ? 'put' : 'post';
+
+      try {
+        const response = await axios({
+          method: method,
+          url: url_api,
+          data: _formData,
+          headers: { 
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}` 
+          },
+        });
+
+        console.log('Response:', response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
 
     fetchData()
     onClose();
-    setSearchUserTerm('')
-    setSearchInstallationTerm('')
+    setSearchTerm('')
+    setFileNameInput('')
+    setFormData(_FORM_FIELDS)
   }
-
 
   const handleChange = (event:any) => {
     const { name, value } = event.target;
@@ -219,28 +231,14 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   };
 
 
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(_SEARCH_TERM_URL.user_url, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { term: searchUserTerm },
-      });
-      const {data} = response.data;
-      setSearchUserValue(data);
-    } catch (error) {
-      console.error('Error fetching animals:', error);
-    }
-  };
-
   const fetchInstallation = async () => {
     try {
-      const response = await axios.get(_SEARCH_TERM_URL.installation_url, {
+      const response = await axios.get(_SEARCH_TERM_URL.directory_url, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { term: searchInstallationTerm },
+        params: { term: searchTerm },
       });
       const {data} = response.data;
-      setSearchInstallationValue(data);
+      setSearchValue(data);
     } catch (error) {
       console.error('Error fetching animals:', error);
     }
@@ -249,10 +247,19 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
 
   useEffect(() => {
     if(token){
-      fetchUsers();
       fetchInstallation();
     }
-  }, [searchUserTerm,token]);
+  }, [token]);
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFileNameInput(e.target.value)
+    setFormData((prevState:any) => ({
+      ...prevState,
+      ['file']: file,
+    }));
+  }
 
 
   return (
@@ -270,46 +277,34 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
         {
           formFields.map((item)=>{
               switch (item) {
-                case "user_id": 
-                return (
-                  <Autocomplete
-                  label="SELECT USER"
-                  className="max-w"
-                  placeholder="Search User"
-                  name={item}
-                  onInputChange={
-                    (value) => {
-                      setSearchUserTerm(value);
-                    }
-                  }
-                  onSelectionChange={(value)=>{
-                    handleSelect(value,"user_id");
-                  }}
-                >
-                  {searchUserValue.map((item) => (
-                    <AutocompleteItem key={item.id} value={item.id}>
-                      {item.name}
-                    </AutocompleteItem>
-                  ))}
-                </Autocomplete>
+                case "file":
+                return ( 
+                  <Input  
+                  key={item}
+                    type="file" 
+                    name={item} 
+                    label="&nbsp;"
+                    value={fileNameInput} 
+                    onInput={handleFileChange}  
+                  />
                 );
-                case "lib_installation_id": 
+                case "lib_directory_id": 
                 return (
                   <Autocomplete
-                  label="SELECT INSTALLATION"
+                  label="SELECT DIRECTORY"
                   className="max-w"
-                  placeholder="Search Installation"
+                  placeholder="Search Directory"
                   name={item}
                   onInputChange={
                     (value) => {
-                      setSearchInstallationTerm(value);
+                      setSearchTerm(value);
                     }
                   }
                   onSelectionChange={(value)=>{
-                    handleSelect(value,"lib_installation_id");
+                    handleSelect(value,"lib_directory_id");
                   }}
                 >
-                  {searchInstallationValue.map((item) => (
+                  {searchValue.map((item) => (
                     <AutocompleteItem key={item.id} value={item.id}>
                       {item.name}
                     </AutocompleteItem>
@@ -319,6 +314,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
                 default:
                 return (
                   <Input 
+                    key={item}
                     autoFocus 
                     type="text" 
                     name={item} 

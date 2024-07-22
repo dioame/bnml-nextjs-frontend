@@ -1,17 +1,16 @@
 import PageComponent from "@/components/PageComponent/PageComponent";
 
-const moduleName = "Installation";
+const moduleName = "Flag Tribute";
 
 export default function() {
-  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/${moduleName.toLowerCase()}`;
+  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/flag-tribute`;
   const _PAGE_NAME = `${moduleName}`;
   const _FORM_FIELDS = {
     user_id: '',
-    lib_installation_id: '',
+    points: '',
   };
   const _SEARCH_TERM_URL = {
     user_url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/user/search`,
-    installation_url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_installation/search`
   };
 
 

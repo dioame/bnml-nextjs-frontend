@@ -19,6 +19,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Link,
 } from "@nextui-org/react";
 import DefaultLayout from "@/layouts/default";
 
@@ -27,9 +28,8 @@ import {VerticalDotsIcon} from "./assets/VerticalDotsIcon";
 import {ChevronDownIcon} from "./assets/ChevronDownIcon";
 import {SearchIcon} from "./assets/SearchIcon";
 import {capitalize} from "./assets/utils";
-import { ExportIcon } from "../icons";
+import { ExportIcon, FileOpenIcon } from "../icons";
 import * as XLSX from "xlsx";
-
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -38,7 +38,6 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
-
 
 export default function UserTableComponent(
   { 
@@ -113,7 +112,24 @@ export default function UserTableComponent(
   const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof TableDatas];
 
+    const href = `${process.env.NEXT_PUBLIC_API_URL}/${cellValue}`;
+
     switch (columnKey) {
+      case "path":
+        return (
+            <Chip
+            href={href}
+            as={Link}
+            target="_blank"
+            variant="shadow"
+            classNames={{
+              base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+              content: "drop-shadow shadow-black text-white",
+            }}
+            >
+            <FileOpenIcon/>
+            </Chip>
+        );
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">

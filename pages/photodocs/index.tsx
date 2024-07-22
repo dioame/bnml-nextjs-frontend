@@ -1,17 +1,22 @@
-import { title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
+import DirectoryPageComponent from "../../components/PageComponent/DirectoryPageComponent";
+        
+const moduleName = "Photo Documentation";
 
-import { useSession, signIn, signOut } from 'next-auth/react';
+export default function() {
+  const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/directory`;
+  const _PAGE_NAME = `${moduleName}`;
+  const _FORM_FIELDS = {
+    lib_directory_id: '',
+    name: '',
+    description: '',
+    file: null
+  };
+  const _SEARCH_TERM_URL = {
+    directory_url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_directory/search`,
+  };
 
 
-export default function Photodocs() {
   return (
-    <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <h1 className={title()}>Photo Documentations</h1>
-        </div>
-      </section>
-    </DefaultLayout>
+    <DirectoryPageComponent _API_URL={_API_URL}  _PAGE_NAME={_PAGE_NAME} _FORM_FIELDS={_FORM_FIELDS} _SEARCH_TERM_URL={_SEARCH_TERM_URL}/>
   );
 }
