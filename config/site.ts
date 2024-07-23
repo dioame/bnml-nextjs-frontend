@@ -15,7 +15,7 @@ export const siteConfig = {
       dropDownItems: [
         {
           label: "Stated Meeting",
-          href: "/stated_meetings",
+          href: "/stated_meeting",
           key: "stated_meeting"
         },
         {
@@ -67,7 +67,7 @@ export const siteConfig = {
           label: "Grand Lodge Issuances",
           href: "/issuances",
           description: "Grand Lodge Issuances/memos",
-          key: "issusances"
+          key: "issuances"
         },
         {
           label: "Financial Report",
@@ -81,18 +81,6 @@ export const siteConfig = {
       label: "Master Records",
       key: "master-records",
       dropDownItems: [
-        {
-          label: "Activities",
-          href: "/lib-activities",
-          description: "Library of Activities",
-          key: "lib_activities",
-        },
-        {
-          label: "Directories",
-          href: "/lib-directories",
-          description: "Library of Directories",
-          key: "lib_directories"
-        },
         {
           label: "Installations",
           href: "/lib-installations",

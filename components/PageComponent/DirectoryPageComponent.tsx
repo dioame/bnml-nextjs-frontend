@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 import { FileUpload } from 'primereact/fileupload';
 
-export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
+export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRECTORY_ID}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
@@ -51,6 +51,9 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const fetchData = async () => {
     try {
       const res = await axios.get(_API_URL, {
+        params: {
+          lib_directory_id : _DIRECTORY_ID
+        },
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -104,16 +107,16 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
 
     const _formData = new FormData();
 
-      _formData.append('file_id', formData.lib_directory_id);
+      _formData.append('file_id', _DIRECTORY_ID);
       _formData.append('name', formData.name);
       _formData.append('description', formData.description);
       _formData.append('file', formData.file);
 
       const url_api = updateDataId 
-        ? `${_API_URL}/${updateDataId}` 
+        ? `${_API_URL}/${updateDataId}/update` 
         : _API_URL;
 
-      const method = updateDataId ? 'put' : 'post';
+      const method = 'post';
 
       try {
         const response = await axios({
@@ -144,14 +147,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
-
-  const handleSelect = (value:any,type:any) => {
-    
-    setFormData((prevState:any) => ({
-      ...prevState,
-      [type]: value,
     }));
   };
 
@@ -220,7 +215,9 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       );
     } else {
       return (
-        <>
+        <section className="flex flex-col items-center justify-center gap-4">
+        <br/>
+      <div className="inline-block max-w text-center justify-center">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex gap-3">
             <Button color="primary" endContent={<PlusIcon />} onPress={() => handleOpen()}>
@@ -230,7 +227,9 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       </div>
       <br/>
       <p>No Result Found</p>
-      </>);
+      </div>
+      </section>
+      );
     }
   };
 
@@ -291,29 +290,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
                     value={fileNameInput} 
                     onInput={handleFileChange}  
                   />
-                );
-                case "lib_directory_id": 
-                return (
-                  <Autocomplete
-                  label="SELECT DIRECTORY"
-                  className="max-w"
-                  placeholder="Search Directory"
-                  name={item}
-                  onInputChange={
-                    (value) => {
-                      setSearchTerm(value);
-                    }
-                  }
-                  onSelectionChange={(value)=>{
-                    handleSelect(value,"lib_directory_id");
-                  }}
-                >
-                  {searchValue.map((item) => (
-                    <AutocompleteItem key={item.id} value={item.id}>
-                      {item.name}
-                    </AutocompleteItem>
-                  ))}
-                </Autocomplete>
                 );
                 default:
                 return (

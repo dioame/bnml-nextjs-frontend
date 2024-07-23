@@ -83,6 +83,7 @@ export default function IndexPage() {
             topContent="Overall Summary"
           >
              <TableHeader>
+             <TableColumn>RANK</TableColumn>
                 <TableColumn>Name</TableColumn>
                 <TableColumn>Stated Meeting</TableColumn>
                 <TableColumn>Stated Meeting</TableColumn>
@@ -93,6 +94,11 @@ export default function IndexPage() {
              <TableBody>
 
               <TableRow key="3">
+              <TableCell>
+              <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 text-center">
+                1
+              </h3>
+              </TableCell>
                 <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -109,6 +115,11 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+              <TableCell>
+              <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 text-center">
+                2
+              </h3>
+              </TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -124,6 +135,11 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+              <TableCell>
+              <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 text-center">
+                3
+              </h3>
+              </TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -139,6 +155,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+                <TableCell>4</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -154,6 +171,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+                <TableCell>4</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -169,6 +187,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+                <TableCell>4</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -184,6 +203,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+                <TableCell>4</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -199,6 +219,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+              <TableCell>54</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"
@@ -214,6 +235,7 @@ export default function IndexPage() {
               </TableRow>
 
               <TableRow key="4">
+              <TableCell>54</TableCell>
                  <TableCell><User   
                       name="Jane Doe"
                       description="Product Designer"

@@ -4,12 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useSession,signOut } from 'next-auth/react';
 
 import CustomTableComponent from "@/components/TableComponent/CustomTableComponent";
-import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Card, CardBody, DatePicker, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
-import { CircleAnimatedIcon } from "../animatedIcons";
+import moment from 'moment';
 
-export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
+
+export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTIVITY_ID}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
@@ -54,7 +55,12 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const fetchData = async () => {
     try {
       const res = await axios.get(_API_URL, {
-        headers: { Authorization: `Bearer ${token}` }
+        params: {
+            lib_activity_id:_ACTIVITY_ID
+        },
+        headers: { 
+            Authorization: `Bearer ${token}` 
+        }
       });
       
       var resultData = res.data;
@@ -104,17 +110,34 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   }
 
   const  handleModalSave = async () =>{
+    // For start_date
+    const { year: startYear, month: startMonth, day: startDay, hour: startHour, minute: startMinute, second: startSecond } = formData.start_date;
+    const formattedStartDate = moment({ year: startYear, month: startMonth - 1, day: startDay, hour: startHour, minute: startMinute, second: startSecond }).format('YYYY-MM-DD HH:mm:ss');
 
-    
+    // For end_date
+    const { year: endYear, month: endMonth, day: endDay, hour: endHour, minute: endMinute, second: endSecond } = formData.end_date;
+    const formattedEndDate = moment({ year: endYear, month: endMonth - 1, day: endDay, hour: endHour, minute: endMinute, second: endSecond }).format('YYYY-MM-DD HH:mm:ss');
+    // console.log(formattedStartDate); // Output: "2024-07-23 15:23:26"
+    // console.log(formattedEndDate); // Output: "2024-07-23 15:23:26"
+
+    const newFormData = {
+        lib_activity_id: _ACTIVITY_ID,
+        name: formData.name,
+        description: formData.description,
+        area: formData.area,
+        start_date: formattedStartDate,
+        end_date: formattedEndDate
+      };
+
     if(updateDataId){
       var url_api = `${_API_URL}/${updateDataId}`;
-      await axios.put(url_api, formData,{
+      await axios.put(url_api, newFormData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
       var url_api = _API_URL;
-      await axios.post(url_api, formData,{
+      await axios.post(url_api, newFormData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -228,43 +251,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     }
   };
 
-
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(_SEARCH_TERM_URL.user_url, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { term: searchUserTerm },
-      });
-      const {data} = response.data;
-      setSearchUserValue(data);
-    } catch (error) {
-      console.error('Error fetching animals:', error);
-    }
-  };
-
-  const fetchInstallation = async () => {
-    try {
-      const response = await axios.get(_SEARCH_TERM_URL.installation_url, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { term: searchInstallationTerm },
-      });
-      const {data} = response.data;
-      setSearchInstallationValue(data);
-    } catch (error) {
-      console.error('Error fetching animals:', error);
-    }
-  };
-
-
-  useEffect(() => {
-    if(token){
-      fetchUsers();
-      fetchInstallation();
-    }
-  }, [searchUserTerm,token]);
-
-
   return (
     <DefaultLayout>
 
@@ -280,6 +266,38 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
         {
           formFields.map((item)=>{
               switch (item) {
+                case "start_date": 
+                return (
+                    <DatePicker
+                    label="Start Date"
+                    variant="bordered"
+                    hideTimeZone
+                    showMonthAndYearPickers
+                    defaultValue={formData.start_date}
+                    onChange={(value)=>{
+                        setFormData((prevData:any) => ({
+                            ...prevData,
+                            start_date: value,
+                        }));
+                    }}
+                  />
+                );
+                case "end_date": 
+                return (
+                    <DatePicker
+                    label="End Date"
+                    variant="bordered"
+                    hideTimeZone
+                    showMonthAndYearPickers
+                    defaultValue={formData.end_date}
+                    onChange={(value)=>{
+                        setFormData((prevData:any) => ({
+                            ...prevData,
+                            end_date: value,
+                        }));
+                    }}
+                    />
+                );
                 case "user_id": 
                 return (
                   <Autocomplete

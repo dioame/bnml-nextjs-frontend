@@ -1,6 +1,6 @@
 import DirectoryPageComponent from "../../components/PageComponent/DirectoryPageComponent";
         
-const moduleName = "Photo Documentation";
+const moduleName = "Grand Lodge Issuances";
 
 export default function() {
   const _API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/directory`;
@@ -14,8 +14,7 @@ export default function() {
     directory_url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/lib_directory/search`,
   };
 
-  //Photo Documentation
-  const _DIRECTORY_ID = 1; //based on table lib_directory
+  const _DIRECTORY_ID = 4; //based on table lib_directory
 
 
   return (
