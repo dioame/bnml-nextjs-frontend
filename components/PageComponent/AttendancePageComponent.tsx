@@ -3,13 +3,12 @@ import axios from 'axios';
 import { useEffect, useMemo, useState } from "react";
 import { useSession,signOut } from 'next-auth/react';
 
-import CustomTableComponent from "@/components/TableComponent/CustomTableComponent";
+import AttendanceTableComponent from "@/components/TableComponent/AttendanceTableComponent";
 import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
-import { CircleAnimatedIcon } from "../animatedIcons";
 
-export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
+export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTIVITY_ID}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
@@ -26,34 +25,30 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const [searchUserTerm, setSearchUserTerm] = useState('');
   const [searchUserValue, setSearchUserValue] = useState([]);
 
-  const [searchInstallationTerm, setSearchInstallationTerm] = useState('');
-  const [searchInstallationValue, setSearchInstallationValue] = useState([]);
-
+  const excludeColumns = ['created_at'];
   const formatColumns = (res:any) => {
     const { data } = res;
     const keys = Object.keys(data[0]);
-    const formattedKeys = keys.map(key => {
+    const finalFormattedKeys = keys.map(key => {
       let name = key
         .split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
-    
-      return {
-        name: name.toUpperCase(),
-        uid: key,
-        sortable: true
-      };
-    });
-    const finalFormattedKeys = formattedKeys.concat({
-      name: "ACTIONS",
-      uid: "actions"
+
+        return {
+            name: name.toUpperCase(),
+            uid: key,
+            sortable: true
+        };
+   
     });
     return finalFormattedKeys;
   }
  
   const fetchData = async () => {
+
     try {
-      const res = await axios.get(_API_URL, {
+      const res = await axios.get(`${_API_URL}/activity/${_ACTIVITY_ID}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -104,16 +99,21 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   }
 
   const  handleModalSave = async () =>{
+
+    const newData = {
+        user_id: formData.user_id,
+        activity_id: _ACTIVITY_ID
+    }
     
     if(updateDataId){
       var url_api = `${_API_URL}/${updateDataId}`;
-      await axios.put(url_api, formData,{
+      await axios.put(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
       var url_api = _API_URL;
-      await axios.post(url_api, formData,{
+      await axios.post(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -122,7 +122,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     fetchData()
     onClose();
     setSearchUserTerm('')
-    setSearchInstallationTerm('')
   }
 
 
@@ -174,13 +173,14 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const renderComponent = () => {
     if (pageStatus == 1) {
       return (
-        <CustomTableComponent 
+        <AttendanceTableComponent 
         title="activity"
         tableDatas={activityData.data}
         columns={columTable}
         onAddNew={()=>{ handleOpen() }}
         onEditNew={(data:any)=>{ handleEditOpen(data) }}
         onDelete={(data:any)=>{ handleDelete(data)}}
+        _ACTIVITY_ID={_ACTIVITY_ID}
         />
       )
     } else if (pageStatus == 0) {
@@ -242,30 +242,15 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     }
   };
 
-  const fetchInstallation = async () => {
-    try {
-      const response = await axios.get(_SEARCH_TERM_URL.installation_url, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { term: searchInstallationTerm },
-      });
-      const {data} = response.data;
-      setSearchInstallationValue(data);
-    } catch (error) {
-      console.error('Error fetching animals:', error);
-    }
-  };
-
-
   useEffect(() => {
     if(token){
       fetchUsers();
-      fetchInstallation();
     }
   }, [searchUserTerm,token]);
 
 
   return (
-    <DefaultLayout>
+    <>
 
 
 <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} isDismissable={false}>
@@ -296,29 +281,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
                   }}
                 >
                   {searchUserValue.map((item) => (
-                    <AutocompleteItem key={item.id} value={item.id}>
-                      {item.name}
-                    </AutocompleteItem>
-                  ))}
-                </Autocomplete>
-                );
-                case "lib_installation_id": 
-                return (
-                  <Autocomplete
-                  label="SELECT INSTALLATION"
-                  className="max-w"
-                  placeholder="Search Installation"
-                  name={item}
-                  onInputChange={
-                    (value) => {
-                      setSearchInstallationTerm(value);
-                    }
-                  }
-                  onSelectionChange={(value)=>{
-                    handleSelect(value,"lib_installation_id");
-                  }}
-                >
-                  {searchInstallationValue.map((item) => (
                     <AutocompleteItem key={item.id} value={item.id}>
                       {item.name}
                     </AutocompleteItem>
@@ -357,6 +319,6 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       </h3>
           
       {renderComponent()}
-    </DefaultLayout>
+  </>
   );
 }

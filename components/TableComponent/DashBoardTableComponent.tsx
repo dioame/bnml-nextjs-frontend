@@ -39,7 +39,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
-export default function UserTableComponent(
+export default function DashBoardTableComponent(
   { 
     title,
     columns,
@@ -187,18 +187,19 @@ export default function UserTableComponent(
 
   return (
     // <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
         {/* <div className="inline-block max-w-lg text-center justify-center"> */}
           <Table
             aria-label="Example table with custom cells, pagination and sorting"
             isHeaderSticky
             bottomContent={bottomContent}
             classNames={{
-              wrapper: "max-h-[382px]",
+              wrapper: "max-h-full",
             }}
             sortDescriptor={sortDescriptor}
             topContent= {topContent}
             onSortChange={setSortDescriptor}
+            style={{height:"auto"}}
           >
             <TableHeader columns={headerColumns}>
               {(column:any) => (

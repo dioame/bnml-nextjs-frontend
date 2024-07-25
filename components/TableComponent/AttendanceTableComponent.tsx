@@ -21,32 +21,23 @@ import {
   SortDescriptor,
   Link,
 } from "@nextui-org/react";
-import DefaultLayout from "@/layouts/default";
 
 import {PlusIcon} from "./assets/PlusIcon";
 import {VerticalDotsIcon} from "./assets/VerticalDotsIcon";
-import {ChevronDownIcon} from "./assets/ChevronDownIcon";
 import {SearchIcon} from "./assets/SearchIcon";
-import {capitalize} from "./assets/utils";
-import { ExportIcon, FileOpenIcon } from "../icons";
+import { ExportIcon, FileOpenIcon, QRIcon } from "../icons";
 import * as XLSX from "xlsx";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
-
-export default function CustomTableComponent(
+export default function AttendanceTableComponent(
   { 
     title,
     columns,
     tableDatas,
     onAddNew,
     onEditNew,
-    onDelete
+    onDelete,
+    _ACTIVITY_ID
   } : any
 ) {
 
@@ -223,9 +214,14 @@ export default function CustomTableComponent(
           />
 
           <div className="flex gap-3">
+     
+
           <Button  className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" endContent={<ExportIcon />} 
             onPress={() => onExport(title,`${title} Export`)}>
               Export
+            </Button>
+            <Button color="warning" endContent={<QRIcon />} as={Link} href={`/attendance-qr-scanner?id=${_ACTIVITY_ID}`}>
+              Scan QR
             </Button>
             <Button color="primary" endContent={<PlusIcon />} onPress={() => onAddNew()}>
               Add New

@@ -19,7 +19,6 @@ import { CircleAnimatedIcon } from "@/components/animatedIcons";
 import DashBoardTableComponent from "@/components/TableComponent/DashBoardTableComponent";
 
 
-
 export default function IndexPage() {
 
 
