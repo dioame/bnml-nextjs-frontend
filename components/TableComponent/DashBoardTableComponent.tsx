@@ -44,24 +44,14 @@ export default function UserTableComponent(
     title,
     columns,
     tableDatas,
-    onAddNew,
-    onEditNew,
-    onDelete
+    topContent
   } : any
 ) {
-
-  tableDatas.map((tableData:any)=>{
-    tableData.actions = null;
-  });
-
 
   //init
   type TableDatas = typeof tableDatas[0];
 
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>("all");
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
@@ -73,10 +63,8 @@ export default function UserTableComponent(
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === "all") return columns;
-
-    return columns.filter((column:any) => Array.from(visibleColumns).includes(column.uid));
-  }, [visibleColumns]);
+    return columns;
+  }, []);
 
   const filteredItems = React.useMemo(() => {
     let filteredUsers = [...tableDatas];
@@ -111,58 +99,37 @@ export default function UserTableComponent(
 
   const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof TableDatas];
-
-    const href = `${process.env.NEXT_PUBLIC_API_URL}/${cellValue}`;
-
-    switch (columnKey) {
-      case "count": 
-      return (
-        <Chip
-            href={`/attendance?id=${data['id']}&title=${data['name']}`}
-            as={Link}
-            target="_blank"
-            variant="shadow"  
-            classNames={{
-              base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-              content: "drop-shadow shadow-black text-white",
-            }}
-            >
-            {cellValue}
-            </Chip>
-      )
-      case "path":
-        return (
+    switch(columnKey){
+        case "file":
+          return (
             <Chip
-            href={href}
-            as={Link}
-            target="_blank"
-            variant="shadow"
-            classNames={{
-              base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-              content: "drop-shadow shadow-black text-white",
-            }}
+              variant="shadow"
+              classNames={{
+                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                content: "drop-shadow shadow-black text-white",
+              }}
+              as={Link}
             >
-            <FileOpenIcon/>
+              <FileOpenIcon/>
             </Chip>
-        );
-      case "actions":
+          )
+        case "id": 
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem onPress={() => onEditNew(data)}>Edit</DropdownItem>
-                <DropdownItem onPress={() => onDelete(data)}>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+            <h3 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 text-center">
+                {cellValue}
+            </h3>
         );
-      default:
-        return cellValue;
+        case "name":
+        return (
+            <User   
+            name={cellValue}
+            avatarProps={{
+                src: ''
+            }}
+            />
+        )
+        default:
+            return cellValue;
     }
   }, []);
 
@@ -177,20 +144,6 @@ export default function UserTableComponent(
       setPage(page - 1);
     }
   }, [page]);
-
-  const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
 
   const onClear = React.useCallback(()=>{
     setFilterValue("")
@@ -208,65 +161,9 @@ export default function UserTableComponent(
     
   }
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-           <div className="flex gap-3">
-            <Button  className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" endContent={<ExportIcon />} 
-            onPress={() => onExport(title,`${title} Export`)}>
-              Export
-            </Button>
-          </div>
-          <div className="flex gap-3">
-            <Button color="primary" endContent={<PlusIcon />} onPress={() => onAddNew()}>
-              Add New
-            </Button>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {tableDatas.length} results</span>
-          <label className="flex items-center text-default-400 text-small">
-            Rows per page:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    statusFilter,
-    visibleColumns,
-    onSearchChange,
-    onRowsPerPageChange,
-    tableDatas.length,
-    hasSearchFilter,
-  ]);
-
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span>
         <Pagination
           isCompact
           showControls
@@ -286,7 +183,7 @@ export default function UserTableComponent(
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [items.length, page, pages, hasSearchFilter]);
 
   return (
     // <DefaultLayout>
@@ -296,16 +193,11 @@ export default function UserTableComponent(
             aria-label="Example table with custom cells, pagination and sorting"
             isHeaderSticky
             bottomContent={bottomContent}
-            bottomContentPlacement="outside"
             classNames={{
               wrapper: "max-h-[382px]",
             }}
-            selectedKeys={selectedKeys}
-            selectionMode="multiple"
             sortDescriptor={sortDescriptor}
-            topContent={topContent}
-            topContentPlacement="outside"
-            onSelectionChange={setSelectedKeys}
+            topContent= {topContent}
             onSortChange={setSortDescriptor}
           >
             <TableHeader columns={headerColumns}>
@@ -329,7 +221,5 @@ export default function UserTableComponent(
           </Table>
           {/* </div> */}
       </section>
-      
-    // </DefaultLayout>
   );
 }

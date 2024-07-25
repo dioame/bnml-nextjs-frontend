@@ -15,13 +15,13 @@ export const siteConfig = {
       dropDownItems: [
         {
           label: "Stated Meeting",
-          href: "/stated_meeting",
-          key: "stated_meeting"
+          href: "/stated-meeting",
+          key: "stated-meeting"
         },
         {
           label: "Special Meeting",
-          href: "/special_meeting",
-          key: "special_meeting"
+          href: "/special-meeting",
+          key: "special-meeting"
         },
       ],
     },
@@ -36,8 +36,8 @@ export const siteConfig = {
         },
         {
           label: "Flag Tribute",
-          href: "/flag_tribute",
-          key: "flag_tribute"
+          href: "/flag-tribute",
+          key: "flag-tribute"
         },
       ],
     },
