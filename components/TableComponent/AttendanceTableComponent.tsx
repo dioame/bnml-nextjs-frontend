@@ -293,7 +293,7 @@ export default function AttendanceTableComponent(
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
             classNames={{
-              wrapper: "max-h-[382px]",
+              wrapper: "max-h-full",
             }}
             selectedKeys={selectedKeys}
             selectionMode="multiple"

@@ -14,12 +14,19 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleAnimatedIcon } from "@/components/animatedIcons";
 import DashBoardTableComponent from "@/components/TableComponent/DashBoardTableComponent";
+import { useSession,signOut } from 'next-auth/react';
+import axios from "axios";
 
 
 export default function IndexPage() {
+  const { data: session, status } = useSession();
+  const token = session?.user?.token;
+
+  const [summaryData, setSummaryData] = useState([]);
+  const [corderData, setCornerData] = useState([]);
 
 
   const [events, setEvent] = useState([
@@ -65,36 +72,81 @@ export default function IndexPage() {
     )
   }
 
-  //========================
-
-  const columTable = [
-    { name: "RANK", uid: "id", sortable: true },
-    { name: "NAME", uid: "name"},
-    { name: "STATED MEETING", uid: "stated_meeting"},
-    { name: "SPECIAL MEETING", uid: "special_meeting"},
-    { name: "INSTALLATION", uid: "installation"},
-    { name: "FLAG TRIBUTE", uid: "flag_tribute"},
-    { name: "TOTAL POINTS", uid: "total_points"},
-  ];
-
-  const activityData = [
-    {id: 1, name: "Hello",}
-  ];
-
-
-
   // ========================
 
+  const summaryPoints = {
+      columns: [
+        { name: "RANK", uid: "id", sortable: true },
+        { name: "NAME", uid: "name"},
+        { name: "STATED MEETING", uid: "stated_meeting_points"},
+        { name: "SPECIAL MEETING", uid: "special_meeting_points"},
+        { name: "INSTALLATION", uid: "installation_points"},
+        { name: "FLAG TRIBUTE", uid: "flag_tribute"},
+        { name: "TOTAL POINTS", uid: "total_points"},
+      ],
+      data(token:any){
+        const fetchData = async () => {
+          try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/overall-summary/points`, {
+              headers: { 
+                  Authorization: `Bearer ${token}` 
+              }
+            });
+            
+            var resultData = res.data;
+            const {data} = resultData;
+            setSummaryData(data);
+            
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+      
+        useEffect(() => {
+          if (token) {
+            fetchData();
+          }
+        }, [token]);
+      }
+  }
 
-  const cornerColumn = [
-    { name: "FILE NAME", uid: "file_name", sortable: true },
-    { name: "FILE", uid: "file", sortable: true },
-  ];
 
-  const cornerData = [
-    {id: 1, file_name: "Hello", file: 'C://'}
-  ];
+  const worshipperCorner = {
+      columns: [
+        // { name: "FILE NAME", uid: "name", sortable: true },
+        // { name: "DESCRIPTION", uid: "description", sortable: true },
+        { name: "NAME", uid: "name", sortable: true },
+        { name: "FILE", uid: "path", sortable: true },
+      ],
+      data(token:any){
+        const fetchData = async () => {
+            try {
+              const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/directory`, {
+                headers: { 
+                    Authorization: `Bearer ${token}` 
+                }
+              });
+              
+              var resultData = res.data;
+              const {data} = resultData;
+              setCornerData(data);
+              
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          };
+        
+          useEffect(() => {
+            if (token) {
+              fetchData();
+            }
+          }, [token]);
+      }
+  }
 
+
+  summaryPoints.data(token);
+  worshipperCorner.data(token);
 
   return (
     <DefaultLayout>
@@ -112,8 +164,8 @@ export default function IndexPage() {
       <div className="col-span-2">
             <DashBoardTableComponent
                 title="activity"
-                tableDatas={activityData}
-                columns={columTable}
+                tableDatas={summaryData}
+                columns={summaryPoints.columns}
                 topContent="Summary"
             />
       </div>
@@ -121,8 +173,8 @@ export default function IndexPage() {
       <div className="col-span-1">
             <DashBoardTableComponent
                 title="activity"
-                tableDatas={cornerData}
-                columns={cornerColumn}
+                tableDatas={corderData}
+                columns={worshipperCorner.columns}
                 topContent="Worshipper's Corner"
             />
       </div>

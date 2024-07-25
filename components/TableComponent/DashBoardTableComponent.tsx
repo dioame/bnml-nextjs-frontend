@@ -100,7 +100,7 @@ export default function DashBoardTableComponent(
   const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof TableDatas];
     switch(columnKey){
-        case "file":
+        case "path":
           return (
             <Chip
               variant="shadow"
@@ -109,6 +109,8 @@ export default function DashBoardTableComponent(
                 content: "drop-shadow shadow-black text-white",
               }}
               as={Link}
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_API_URL}/${data['path']}`}
             >
               <FileOpenIcon/>
             </Chip>
