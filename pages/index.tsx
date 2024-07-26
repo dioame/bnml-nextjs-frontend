@@ -32,6 +32,7 @@ export default function IndexPage() {
   const [specialData, setSpecialData] = useState([]);
   const [corderData, setCornerData] = useState([]);
   const [installationData, setInstallationData] = useState([]);
+  const [flagTributeData, setFlagTributeData] = useState([]);
   const [events, setEvent] = useState([]);
   const router = useRouter();
 
@@ -91,7 +92,7 @@ export default function IndexPage() {
         { name: "STATED MEETING", uid: "stated_meeting_points"},
         { name: "SPECIAL MEETING", uid: "special_meeting_points"},
         { name: "INSTALLATION", uid: "installation_points"},
-        { name: "FLAG TRIBUTE", uid: "flag_tribute"},
+        { name: "FLAG TRIBUTE", uid: "flag_tribute_points"},
         { name: "TOTAL POINTS", uid: "total_points"},
       ],
       data(token:any){
@@ -259,7 +260,8 @@ const specialPoints = {
 
   const worshipperCorner = {
       columns: [
-        { name: "NAME", uid: "name", sortable: true },
+        { name: "id", uid: "id", sortable: true },
+        { name: "NAME", uid: "fname", sortable: true },
         { name: "FILE", uid: "path", sortable: true },
       ],
       data(token:any){
@@ -273,6 +275,9 @@ const specialPoints = {
               
               var resultData = res.data;
               const {data} = resultData;
+              data.map((item:any)=>{
+                item.fname = item.name
+              });
               setCornerData(data);
               
             } catch (error) {
@@ -323,12 +328,47 @@ const specialPoints = {
       }
   }
 
+  const flagTribute = {
+      columns: [
+        { name: "RANK", uid: "rank", sortable: true },
+        { name: "NAME", uid: "name", sortable: true },
+        { name: "POINTS", uid: "points"},
+      ],
+      data(token:any){
+        const fetchData = async () => {
+          try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/flag-tribute/points`, {
+              headers: { 
+                  Authorization: `Bearer ${token}` 
+              }
+            });
+            
+            var resultData = res.data;
+            const {data} = resultData;
+
+            setFlagTributeData(data);
+            
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+      
+        useEffect(() => {
+          if (token) {
+            fetchData();
+          }
+        }, [token]);
+      }
+  };
+
+
   specialPoints.data(token);
   statedPoints.data(token);
   summaryPoints.data(token);
   worshipperCorner.data(token);
   calendarEvents.data(token);
   installationPoints.data(token);
+  flagTribute.data(token);
 
   return (
     <DefaultLayout>
@@ -359,6 +399,13 @@ const specialPoints = {
                 tableDatas={corderData}
                 columns={worshipperCorner.columns}
                 topContent="Worshipper's Corner"
+            />
+
+            <DashBoardTableComponent
+                title="activity"
+                tableDatas={flagTributeData}
+                columns={flagTribute.columns}
+                topContent="Flag Tribute"
             />
       </div>
 
