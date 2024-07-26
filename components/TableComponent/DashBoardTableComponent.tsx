@@ -28,16 +28,9 @@ import {VerticalDotsIcon} from "./assets/VerticalDotsIcon";
 import {ChevronDownIcon} from "./assets/ChevronDownIcon";
 import {SearchIcon} from "./assets/SearchIcon";
 import {capitalize} from "./assets/utils";
-import { ExportIcon, FileOpenIcon } from "../icons";
+import { CheckIcon, ExportIcon, FileOpenIcon, XmarkIcon } from "../icons";
 import * as XLSX from "xlsx";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
-
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
 export default function DashBoardTableComponent(
   { 
@@ -99,7 +92,41 @@ export default function DashBoardTableComponent(
 
   const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof TableDatas];
+
+    const months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+    if(months.includes(columnKey)){
+        if(cellValue){
+          return <CheckIcon/>;
+        }else{
+          return <XmarkIcon/>;
+        }
+    }
     switch(columnKey){
+        case "installation":
+          // console.log(cellValue)
+          // $''
+          // for(var i in cellValue){
+
+          // }
+          return(
+            <>
+            {cellValue.map((value:any)=>{
+              return (
+                <div className="gap-3">
+                <Chip
+                  variant="shadow"
+                  classNames={{
+                    base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                    content: "drop-shadow shadow-black text-white",
+                  }}
+                >
+                 {value.name}
+                </Chip>
+                </div>
+              )
+            })}
+            </>
+          )
         case "path":
           return (
             <Chip

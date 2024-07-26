@@ -10,7 +10,15 @@ import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 import moment from 'moment';
 
 
-export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTIVITY_ID}:any) {
+export default function({
+  _API_URL,
+  _PAGE_NAME,
+  _FORM_FIELDS,
+  _SEARCH_TERM_URL,
+  _ACTIVITY_ID,
+  _IS_ATTENDANCE,
+  _DEFINE_COLUMNS
+}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
@@ -70,14 +78,22 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
               if (key.endsWith('_id')) {
                   delete newItem[key]; // Delete the key if it ends with '_id'
               }
+              if (_IS_ATTENDANCE === false && key === 'count') {
+                  delete newItem[key]; // Delete the 'count' key if _IS_ATTENDANCE is false
+              }
           });
           return newItem; // Return the cleaned item
       });
 
 
+      if(_DEFINE_COLUMNS){
+        setColumnTable(_DEFINE_COLUMNS)
+      }else{
+        var cols = formatColumns({data:cleanedData});
+        setColumnTable(cols)
+      }
+      
 
-      var cols = formatColumns({data:cleanedData});
-      setColumnTable(cols)
       setActivityData({data:cleanedData});
       setLoading(false);
       if(res.data.data){

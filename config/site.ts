@@ -23,6 +23,11 @@ export const siteConfig = {
           href: "/special-meeting",
           key: "special-meeting"
         },
+        {
+          label: "Events",
+          href: "/events",
+          key: "events"
+        },
       ],
     },
     {

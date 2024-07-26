@@ -19,6 +19,8 @@ import { CircleAnimatedIcon } from "@/components/animatedIcons";
 import DashBoardTableComponent from "@/components/TableComponent/DashBoardTableComponent";
 import { useSession,signOut } from 'next-auth/react';
 import axios from "axios";
+import { useRouter } from 'next/router';
+import statedMeeting from "./stated-meeting";
 
 
 export default function IndexPage() {
@@ -26,53 +28,61 @@ export default function IndexPage() {
   const token = session?.user?.token;
 
   const [summaryData, setSummaryData] = useState([]);
+  const [statedData, setStatedData] = useState([]);
+  const [specialData, setSpecialData] = useState([]);
   const [corderData, setCornerData] = useState([]);
+  const [installationData, setInstallationData] = useState([]);
+  const [events, setEvent] = useState([]);
+  const router = useRouter();
 
 
-  const [events, setEvent] = useState([
-    { id:1, 
-      title: 'Meeting', 
-      start: '2024-07-10', 
-      end: '2024-07-11', 
-      // interactive:true, 
-      editable:true,
-      // url:"https://fullcalendar.io/docs/event-parsing" 
+  const calendarEvents = {
+    addEvent(){
+      router.push('/events');
     },
-    { id:2, 
-      title: 'Meetingx', 
-      start: '2024-07-10', 
-      end: '2024-07-16', 
-      editable:true ,
-      backgroundColor: 'red',
+    renderEventContent(eventInfo:any){
+      return (
+        <>
+          <b>{eventInfo.timeText}</b>
+          <i>{eventInfo.event.title}</i>
+        </>
+      )
     },
-
-  ]);
-
-  function addEvent(){
-    setEvent([
-      ...events,
-      {
-        id: 3,
-        title: 'Meeting123',
-        start: '2024-07-10',
-        end: '2024-07-16',
-        editable: true,
-        backgroundColor: 'red',
-      }
-    ]);
-  }
-
-  // a custom render function
-  function renderEventContent(eventInfo) {
-    return (
-      <>
-        <b>{eventInfo.timeText}</b>
-        <i>{eventInfo.event.title}</i>
-      </>
-    )
-  }
-
-  // ========================
+    data(token:any){
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/activities`, {
+            headers: { 
+                Authorization: `Bearer ${token}` 
+            }
+          });
+          var resultData = res.data;
+          const {data} = resultData;
+          // console.log(data);
+          const activities = [];
+          for(var i in data){
+            activities.push({
+                  id : data[i].id,
+                  title: data[i].name,
+                  start: data[i].start_date_raw,
+                  end: data[i].end_date_raw,
+                  editable: true,
+                  backgroundColor: (data[i].lib_activity_id === 1) ? '#f0b173' :  (data[i].lib_activity_id == 2) ? '#4ce64c' : '#638bd4'
+              });
+          }
+          setEvent(activities);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      useEffect(() => {
+        if (token) {
+          fetchData();
+        }
+      }, [token]);
+    }
+  };
 
   const summaryPoints = {
       columns: [
@@ -111,10 +121,144 @@ export default function IndexPage() {
   }
 
 
+  const statedPoints = {
+    columns: [
+      { name: "RANK", uid: "user_id", sortable: true },
+      { name: "NAME", uid: "name"},
+      { name: "JAN", uid: "jan"},
+      { name: "FEB", uid: "feb"},
+      { name: "MAR", uid: "mar"},
+      { name: "APR", uid: "apr"},
+      { name: "MAY", uid: "may"},
+      { name: "JUN", uid: "jun"},
+      { name: "JUL", uid: "jul"},
+      { name: "AUG", uid: "aug"},
+      { name: "SEP", uid: "sep"},
+      { name: "OCT", uid: "oct"},
+      { name: "NOV", uid: "nov"},
+      { name: "DEC", uid: "dec"},
+      { name: "POINTS", uid: "points"},
+    ],
+    data(token:any){
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/meeting/stated-meeting/points`, {
+            headers: { 
+                Authorization: `Bearer ${token}` 
+            }
+          });
+          
+          var resultData = res.data;
+          const {data} = resultData;
+          // console.log(data);
+          const newData = [];
+          for(var i in data){
+              newData.push({
+                 id: data[i].id,
+                 user_id: data[i].user_id,
+                 name: data[i].name,
+                 jan: data[i].activities.jan ? true : null,
+                 feb: data[i].activities.feb ? true : null,
+                 mar: data[i].activities.mar ? true : null,
+                 apr: data[i].activities.apr ? true : null,
+                 may: data[i].activities.may ? true : null,
+                 jun: data[i].activities.jun ? true : null,
+                 jul: data[i].activities.jul ? true : null,
+                 aug: data[i].activities.aug ? true : null,
+                 sep: data[i].activities.sep ? true : null,
+                 oct: data[i].activities.oct ? true : null,
+                 nov: data[i].activities.nov ? true : null,
+                 dec: data[i].activities.dec ? true : null,
+                 points: data[i].points
+              });
+          }
+          // console.log(newData);
+          setStatedData(newData);
+          
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      useEffect(() => {
+        if (token) {
+          fetchData();
+        }
+      }, [token]);
+    }
+}
+
+
+const specialPoints = {
+  columns: [
+    { name: "RANK", uid: "user_id", sortable: true },
+    { name: "NAME", uid: "name"},
+    { name: "JAN", uid: "jan"},
+    { name: "FEB", uid: "feb"},
+    { name: "MAR", uid: "mar"},
+    { name: "APR", uid: "apr"},
+    { name: "MAY", uid: "may"},
+    { name: "JUN", uid: "jun"},
+    { name: "JUL", uid: "jul"},
+    { name: "AUG", uid: "aug"},
+    { name: "SEP", uid: "sep"},
+    { name: "OCT", uid: "oct"},
+    { name: "NOV", uid: "nov"},
+    { name: "DEC", uid: "dec"},
+    { name: "POINTS", uid: "points"},
+  ],
+  data(token:any){
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/meeting/special-meeting/points`, {
+          headers: { 
+              Authorization: `Bearer ${token}` 
+          }
+        });
+        
+        var resultData = res.data;
+        const {data} = resultData;
+        // console.log(data);
+        const newData = [];
+        for(var i in data){
+            newData.push({
+               id: data[i].id,
+               user_id: data[i].user_id,
+               name: data[i].name,
+               jan: data[i].activities.jan ? true : null,
+               feb: data[i].activities.feb ? true : null,
+               mar: data[i].activities.mar ? true : null,
+               apr: data[i].activities.apr ? true : null,
+               may: data[i].activities.may ? true : null,
+               jun: data[i].activities.jun ? true : null,
+               jul: data[i].activities.jul ? true : null,
+               aug: data[i].activities.aug ? true : null,
+               sep: data[i].activities.sep ? true : null,
+               oct: data[i].activities.oct ? true : null,
+               nov: data[i].activities.nov ? true : null,
+               dec: data[i].activities.dec ? true : null,
+               points: data[i].points
+            });
+        }
+        // console.log(newData);
+        setSpecialData(newData);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    useEffect(() => {
+      if (token) {
+        fetchData();
+      }
+    }, [token]);
+  }
+}
+
+
   const worshipperCorner = {
       columns: [
-        // { name: "FILE NAME", uid: "name", sortable: true },
-        // { name: "DESCRIPTION", uid: "description", sortable: true },
         { name: "NAME", uid: "name", sortable: true },
         { name: "FILE", uid: "path", sortable: true },
       ],
@@ -144,9 +288,47 @@ export default function IndexPage() {
       }
   }
 
+  const installationPoints = {
+      columns: [
+        { name: "RANK", uid: "user_id", sortable: true },
+        { name: "NAME", uid: "name", sortable: true },
+        { name: "INSTALLATION", uid: "installation"},
+        { name: "POINTS", uid: "points"},
+      ],
+      data(token:any){
+        const fetchData = async () => {
+            try {
+              const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/installation/points`, {
+                headers: { 
+                    Authorization: `Bearer ${token}` 
+                }
+              });
+              
+              var resultData = res.data;
+              const {data} = resultData;
 
+              console.log(data);
+              setInstallationData(data);
+              
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          };
+        
+          useEffect(() => {
+            if (token) {
+              fetchData();
+            }
+          }, [token]);
+      }
+  }
+
+  specialPoints.data(token);
+  statedPoints.data(token);
   summaryPoints.data(token);
   worshipperCorner.data(token);
+  calendarEvents.data(token);
+  installationPoints.data(token);
 
   return (
     <DefaultLayout>
@@ -177,6 +359,70 @@ export default function IndexPage() {
                 columns={worshipperCorner.columns}
                 topContent="Worshipper's Corner"
             />
+      </div>
+
+     
+
+      <div className="col-span-3">
+          <DashBoardTableComponent
+                title="activity"
+                tableDatas={statedData}
+                columns={statedPoints.columns}
+                topContent="Stated Meeting"
+          />
+      </div>
+
+      <div className="col-span-3">
+          <DashBoardTableComponent
+                title="activity"
+                tableDatas={specialData}
+                columns={specialPoints.columns}
+                topContent="Special Meeting"
+          />
+      </div>
+
+      <div className="col-span-3">
+          <DashBoardTableComponent
+                title="activity"
+                tableDatas={installationData}
+                columns={installationPoints.columns}
+                topContent="Installations"
+          />
+      </div>
+
+
+
+      <div className="col-span-3">
+      <Card>
+          <CardHeader>
+            Calendar of Activities
+          </CardHeader>
+          <CardBody>
+
+      <FullCalendar 
+        plugins={[dayGridPlugin,timeGridPlugin,listPlugin]}
+        initialView='dayGridMonth'
+        events={events}
+        eventContent={calendarEvents.renderEventContent}
+        height={500}
+        eventClick={(e)=>{
+          console.log(e.event.id);
+        }}
+        customButtons={{
+          myCustomButton: {
+            text: 'Add Event',
+            click: calendarEvents.addEvent
+          }
+        }}
+        headerToolbar={{
+          left: 'prev,next myCustomButton',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' 
+        }}
+      />
+          </CardBody>
+        </Card>
+
       </div>
 
     </div>
