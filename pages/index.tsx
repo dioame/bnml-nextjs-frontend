@@ -349,6 +349,7 @@ const specialPoints = {
                 tableDatas={summaryData}
                 columns={summaryPoints.columns}
                 topContent="Summary"
+                paginationNumber={10}
             />
       </div>
 

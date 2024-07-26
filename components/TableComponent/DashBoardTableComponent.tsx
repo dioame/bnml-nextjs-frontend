@@ -37,7 +37,8 @@ export default function DashBoardTableComponent(
     title,
     columns,
     tableDatas,
-    topContent
+    topContent,
+    paginationNumber
   } : any
 ) {
 
@@ -45,7 +46,7 @@ export default function DashBoardTableComponent(
   type TableDatas = typeof tableDatas[0];
 
   const [filterValue, setFilterValue] = React.useState("");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(paginationNumber ? paginationNumber : 5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
     direction: "ascending",
