@@ -8,7 +8,19 @@ import { Autocomplete, AutocompleteItem, Button, Card, CardBody, DatePicker, Inp
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 import moment from 'moment';
+type User = {
+  id: string;
+  name: string;
+};
 
+type Installation = {
+  id: string;
+  name: string;
+};
+
+interface ActivityData {
+  data: any[]; 
+}
 
 export default function({
   _API_URL,
@@ -20,23 +32,23 @@ export default function({
   _DEFINE_COLUMNS
 }:any) {
 
-  const [formData, setFormData] = useState(_FORM_FIELDS);
-  const formFields = Object.keys(formData);
-  const [activityData, setActivityData] = useState([]);
-  const [columTable, setColumnTable] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [updateDataId, setUpdateDataId] = useState(null);
-  const { data: session, status } = useSession();
-  const token = session?.user?.token;
-  const { isOpen, onOpen, onClose } = useDisclosure();  
-  const [modalTitle, setModalTitle] = useState('Modal Title');
-  const [pageStatus, setPageStatus] = useState(0);
+const [formData, setFormData] = useState<Record<string, any>>(_FORM_FIELDS);
+const formFields = Object.keys(formData);
+const [activityData, setActivityData] = useState<ActivityData>({ data: [] });
+const [columnTable, setColumnTable] = useState<Record<string, any>>({});
+const [loading, setLoading] = useState(false);
+const [updateDataId, setUpdateDataId] = useState<string | null>(null);
+const { data: session, status } = useSession();
+const token = session?.user?.token;
+const { isOpen, onOpen, onClose } = useDisclosure();
+const [modalTitle, setModalTitle] = useState<string>('Modal Title');
+const [pageStatus, setPageStatus] = useState<number>(0);
 
-  const [searchUserTerm, setSearchUserTerm] = useState('');
-  const [searchUserValue, setSearchUserValue] = useState([]);
-
-  const [searchInstallationTerm, setSearchInstallationTerm] = useState('');
-  const [searchInstallationValue, setSearchInstallationValue] = useState([]);
+const [searchUserTerm, setSearchUserTerm] = useState<string>('');
+const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
+const [searchInstallationTerm, setSearchInstallationTerm] = useState<string>('');
+const [searchInstallationValue, setSearchInstallationValue] = useState<Installation[]>([]); 
+  
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -53,9 +65,10 @@ export default function({
         sortable: true
       };
     });
-    const finalFormattedKeys = formattedKeys.concat({
+  const finalFormattedKeys = formattedKeys.concat({
       name: "ACTIONS",
-      uid: "actions"
+      uid: "actions",
+      sortable: false
     });
     return finalFormattedKeys;
   }
@@ -72,7 +85,7 @@ export default function({
       });
       
       var resultData = res.data;
-      const cleanedData = resultData.data.map(item => {
+      const cleanedData = resultData.data.map((item:any) => {
           const newItem = {...item}; // Create a copy of the item
           Object.keys(newItem).forEach(key => {
               if (key.endsWith('_id')) {
@@ -144,15 +157,16 @@ export default function({
         start_date: formattedStartDate,
         end_date: formattedEndDate
       };
-
+    
+    let url_api: string;
     if(updateDataId){
-      var url_api = `${_API_URL}/${updateDataId}`;
+      url_api = `${_API_URL}/${updateDataId}`;
       await axios.put(url_api, newFormData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
-      var url_api = _API_URL;
+      url_api = _API_URL;
       await axios.post(url_api, newFormData,{
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -169,7 +183,7 @@ export default function({
   const handleChange = (event:any) => {
     const { name, value } = event.target;
     
-    setFormData((prevState) => ({
+    setFormData((prevState:any) => ({
       ...prevState,
       [name]: value,
     }));
@@ -217,7 +231,7 @@ export default function({
         <CustomTableComponent 
         title="activity"
         tableDatas={activityData.data}
-        columns={columTable}
+        columns={columnTable}
         onAddNew={()=>{ handleOpen() }}
         onEditNew={(data:any)=>{ handleEditOpen(data) }}
         onDelete={(data:any)=>{ handleDelete(data)}}

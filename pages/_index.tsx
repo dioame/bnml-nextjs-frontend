@@ -22,7 +22,7 @@ import { CircleAnimatedIcon } from "@/components/animatedIcons";
 export default function IndexPage() {
 
   const [events, setEvent] = useState([
-    { id:1, 
+    { id:'1', 
       title: 'Meeting', 
       start: '2024-07-10', 
       end: '2024-07-11', 
@@ -30,7 +30,7 @@ export default function IndexPage() {
       editable:true,
       // url:"https://fullcalendar.io/docs/event-parsing" 
     },
-    { id:2, 
+    { id:'2', 
       title: 'Meetingx', 
       start: '2024-07-10', 
       end: '2024-07-16', 
@@ -44,7 +44,7 @@ export default function IndexPage() {
     setEvent([
       ...events,
       {
-        id: 3,
+        id: '3',
         title: 'Meeting123',
         start: '2024-07-10',
         end: '2024-07-16',
@@ -55,7 +55,7 @@ export default function IndexPage() {
   }
 
   // a custom render function
-  function renderEventContent(eventInfo) {
+  function renderEventContent(eventInfo:any) {
     return (
       <>
         <b>{eventInfo.timeText}</b>
@@ -70,7 +70,7 @@ export default function IndexPage() {
     <div className="grid grid-cols-3 gap-5">
       <div className="col-span-3">
         <Card>
-          <CardBody className="flex inline-block">
+          <CardBody className="flex items-center">
      
           <CircleAnimatedIcon className="inline-block mr-2" />
           <span>Welcome to Balanghay Nine Masonic Lodge 493 Information System.</span>

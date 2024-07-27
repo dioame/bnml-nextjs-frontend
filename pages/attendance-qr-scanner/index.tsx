@@ -9,6 +9,12 @@ import Swal from 'sweetalert2'
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
 
+type Attendance = {
+    id: string;
+    name: string;
+    created_at: string;
+  };
+
 export default function() {
     const router = useRouter();
     const { id } = router.query;
@@ -16,7 +22,7 @@ export default function() {
 
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [attendance, setAttendance] = useState([]);
+    const [attendance, setAttendance] = useState<Attendance[]>([]);
  
     const fetchData = async () => {
         try {
@@ -26,14 +32,11 @@ export default function() {
         
         const resultData = res.data;
         const {data} = resultData;
-        const arr = [];
-        for(var i in data){
-            arr.push({
-                id: data[i].id,
-                name: data[i].name,
-                created_at: data[i].created_at,
-            });
-        }
+        const arr: Attendance[] = data.map((item: any) => ({
+            id: item.id.toString(), // ensure id is a string
+            name: item.name,
+            created_at: item.created_at,
+          }));
         setAttendance(arr);
         } catch (error) {
         console.error('Error fetching data:', error);

@@ -20,11 +20,11 @@ export default function Settings() {
                       alt="nextui logo"
                       height={40}
                       radius="sm"
-                      src={session.user.image}
+                      src={session.user.image ?? ' '}
                       width={40}
                     />
                     <div className="flex flex-col">
-                      <p className="text-md">{session.user.firstname} {session.user.middlename} {session.user.lastname}</p>
+                      <p className="text-md">{session.user.firstname} {session.user?.middlename} {session.user.lastname}</p>
                       <p className="text-small text-default-500">{session.user.email}</p>
                     </div>
                   </CardHeader>
