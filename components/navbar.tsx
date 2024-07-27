@@ -36,13 +36,14 @@ import {
 import { Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Image, User, DropdownSection, Skeleton } from "@nextui-org/react";
 import { useSession,signOut } from 'next-auth/react';
 
+
 export const Navbar = () => {
   const { data: session, status } = useSession();
   const userData = {
-    name: (session?.user?.firstname)+' '+(session?.user?.lastname),
-    email: session?.user?.email,
-    image: session?.user?.image
-  }
+    name: session?.user?.firstname ?? '' + ' ' + session?.user?.lastname ?? '',
+    email: session?.user?.email ?? '',
+    image: session?.user?.image ?? ''
+  };
   
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
@@ -77,10 +78,10 @@ export const Navbar = () => {
               <svg width="200" height="50" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
                   <rect width="100%" height="100%" fill="#f5f5f5"/>
                   
-                  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="40" fill="#333" text-anchor="middle" alignment-baseline="central">
+                  <text x="50%" y="50%" fontFamily="Arial, sans-serif" fontSize="40" fill="#333" textAnchor="middle" alignmentBaseline="central">
                     BNML
                   </text>
-                  <line x1="20" y1="80" x2="180" y2="80" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+                  <line x1="20" y1="80" x2="180" y2="80" stroke="#333" strokeWidth="2" strokeDasharray="5,5"/>
                 </svg>
               </p>
             </NextLink>

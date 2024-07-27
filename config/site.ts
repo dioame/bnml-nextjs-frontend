@@ -16,16 +16,19 @@ export const siteConfig = {
         {
           label: "Stated Meeting",
           href: "/stated-meeting",
+          description: "Meetings",
           key: "stated-meeting"
         },
         {
           label: "Special Meeting",
           href: "/special-meeting",
+          description: "Meetings",
           key: "special-meeting"
         },
         {
           label: "Events",
           href: "/events",
+          description: "Events",
           key: "events"
         },
       ],
@@ -37,11 +40,13 @@ export const siteConfig = {
         {
           label: "Installations",
           href: "/installations",
+          description: "Installation",
           key: "installations"
         },
         {
           label: "Flag Tribute",
           href: "/flag-tribute",
+          description: "Flag Tribute.",
           key: "flag-tribute"
         },
       ],
