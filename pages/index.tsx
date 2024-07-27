@@ -9,6 +9,41 @@ import { CheckIcon, FileOpenIcon, GithubIcon, Home, XmarkIcon,SparklesIcon } fro
 import DefaultLayout from "@/layouts/default";
 import {  Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@nextui-org/react";
 
+interface Event {
+  id: any;
+  title: string;
+  start: string; 
+  end: string; 
+  editable: boolean;
+  backgroundColor: string;
+}
+
+interface MeetingPoint {
+  id: any;
+  user_id: any;
+  name: string;
+  jan: boolean | null;
+  feb: boolean | null;
+  mar: boolean | null;
+  apr: boolean | null;
+  may: boolean | null;
+  jun: boolean | null;
+  jul: boolean | null;
+  aug: boolean | null;
+  sep: boolean | null;
+  oct: boolean | null;
+  nov: boolean | null;
+  dec: boolean | null;
+  points: any;
+}
+
+
+interface FlagTributePoint {
+  rank: any;
+  name:any;
+  points:any;
+}
+
 // CALENDAR
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -28,12 +63,12 @@ export default function IndexPage() {
   const token = session?.user?.token;
 
   const [summaryData, setSummaryData] = useState([]);
-  const [statedData, setStatedData] = useState([]);
-  const [specialData, setSpecialData] = useState([]);
+  const [statedData, setStatedData] = useState<MeetingPoint[]>([]);
+  const [specialData, setSpecialData] = useState<MeetingPoint[]>([]);
   const [corderData, setCornerData] = useState([]);
   const [installationData, setInstallationData] = useState([]);
-  const [flagTributeData, setFlagTributeData] = useState([]);
-  const [events, setEvent] = useState([]);
+  const [flagTributeData, setFlagTributeData] = useState<FlagTributePoint[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);  
   const router = useRouter();
 
 
@@ -71,7 +106,7 @@ export default function IndexPage() {
                   backgroundColor: (data[i].lib_activity_id === 1) ? '#f0b173' :  (data[i].lib_activity_id == 2) ? '#4ce64c' : '#638bd4'
               });
           }
-          setEvent(activities);
+          setEvents(activities);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -125,33 +160,32 @@ export default function IndexPage() {
   const statedPoints = {
     columns: [
       { name: "RANK", uid: "user_id", sortable: true },
-      { name: "NAME", uid: "name"},
-      { name: "JAN", uid: "jan"},
-      { name: "FEB", uid: "feb"},
-      { name: "MAR", uid: "mar"},
-      { name: "APR", uid: "apr"},
-      { name: "MAY", uid: "may"},
-      { name: "JUN", uid: "jun"},
-      { name: "JUL", uid: "jul"},
-      { name: "AUG", uid: "aug"},
-      { name: "SEP", uid: "sep"},
-      { name: "OCT", uid: "oct"},
-      { name: "NOV", uid: "nov"},
-      { name: "DEC", uid: "dec"},
-      { name: "POINTS", uid: "points"},
+      { name: "NAME", uid: "name" },
+      { name: "JAN", uid: "jan" },
+      { name: "FEB", uid: "feb" },
+      { name: "MAR", uid: "mar" },
+      { name: "APR", uid: "apr" },
+      { name: "MAY", uid: "may" },
+      { name: "JUN", uid: "jun" },
+      { name: "JUL", uid: "jul" },
+      { name: "AUG", uid: "aug" },
+      { name: "SEP", uid: "sep" },
+      { name: "OCT", uid: "oct" },
+      { name: "NOV", uid: "nov" },
+      { name: "DEC", uid: "dec" },
+      { name: "POINTS", uid: "points" },
     ],
-    data(token:any){
+    data(token: any) {
       const fetchData = async () => {
         try {
           const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/meeting/stated-meeting/points`, {
             headers: { 
-                Authorization: `Bearer ${token}` 
+              Authorization: `Bearer ${token}` 
             }
           });
           
           var resultData = res.data;
           const {data} = resultData;
-          // console.log(data);
           const newData = [];
           for(var i in data){
               newData.push({
@@ -173,89 +207,87 @@ export default function IndexPage() {
                  points: data[i].points
               });
           }
-          // console.log(newData);
-          setStatedData(newData);
+          setStatedData(newData)
+
           
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       };
-    
+  
       useEffect(() => {
         if (token) {
           fetchData();
         }
       }, [token]);
     }
-}
+  };
 
-
-const specialPoints = {
-  columns: [
-    { name: "RANK", uid: "user_id", sortable: true },
-    { name: "NAME", uid: "name"},
-    { name: "JAN", uid: "jan"},
-    { name: "FEB", uid: "feb"},
-    { name: "MAR", uid: "mar"},
-    { name: "APR", uid: "apr"},
-    { name: "MAY", uid: "may"},
-    { name: "JUN", uid: "jun"},
-    { name: "JUL", uid: "jul"},
-    { name: "AUG", uid: "aug"},
-    { name: "SEP", uid: "sep"},
-    { name: "OCT", uid: "oct"},
-    { name: "NOV", uid: "nov"},
-    { name: "DEC", uid: "dec"},
-    { name: "POINTS", uid: "points"},
-  ],
-  data(token:any){
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/meeting/special-meeting/points`, {
-          headers: { 
-              Authorization: `Bearer ${token}` 
-          }
-        });
-        
-        var resultData = res.data;
-        const {data} = resultData;
-        // console.log(data);
-        const newData = [];
-        for(var i in data){
-            newData.push({
-               id: data[i].id,
-               user_id: data[i].user_id,
-               name: data[i].name,
-               jan: data[i].activities.jan ? true : null,
-               feb: data[i].activities.feb ? true : null,
-               mar: data[i].activities.mar ? true : null,
-               apr: data[i].activities.apr ? true : null,
-               may: data[i].activities.may ? true : null,
-               jun: data[i].activities.jun ? true : null,
-               jul: data[i].activities.jul ? true : null,
-               aug: data[i].activities.aug ? true : null,
-               sep: data[i].activities.sep ? true : null,
-               oct: data[i].activities.oct ? true : null,
-               nov: data[i].activities.nov ? true : null,
-               dec: data[i].activities.dec ? true : null,
-               points: data[i].points
-            });
-        }
-        // console.log(newData);
-        setSpecialData(newData);
-        
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
   
-    useEffect(() => {
-      if (token) {
-        fetchData();
-      }
-    }, [token]);
-  }
-}
+  const specialPoints = {
+    columns: [
+      { name: "RANK", uid: "user_id", sortable: true },
+      { name: "NAME", uid: "name" },
+      { name: "JAN", uid: "jan" },
+      { name: "FEB", uid: "feb" },
+      { name: "MAR", uid: "mar" },
+      { name: "APR", uid: "apr" },
+      { name: "MAY", uid: "may" },
+      { name: "JUN", uid: "jun" },
+      { name: "JUL", uid: "jul" },
+      { name: "AUG", uid: "aug" },
+      { name: "SEP", uid: "sep" },
+      { name: "OCT", uid: "oct" },
+      { name: "NOV", uid: "nov" },
+      { name: "DEC", uid: "dec" },
+      { name: "POINTS", uid: "points" },
+    ],
+    data(token: any) {
+      const fetchData = async () => {
+        try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/staff/meeting/special-meeting/points`, {
+            headers: { 
+              Authorization: `Bearer ${token}` 
+            }
+          });
+          var resultData = res.data;
+          const {data} = resultData;
+          const newData = [];
+          for(var i in data){
+              newData.push({
+                id: data[i].id,
+                user_id: data[i].user_id,
+                name: data[i].name,
+                jan: data[i].activities.jan ? true : null,
+                feb: data[i].activities.feb ? true : null,
+                mar: data[i].activities.mar ? true : null,
+                apr: data[i].activities.apr ? true : null,
+                may: data[i].activities.may ? true : null,
+                jun: data[i].activities.jun ? true : null,
+                jul: data[i].activities.jul ? true : null,
+                aug: data[i].activities.aug ? true : null,
+                sep: data[i].activities.sep ? true : null,
+                oct: data[i].activities.oct ? true : null,
+                nov: data[i].activities.nov ? true : null,
+                dec: data[i].activities.dec ? true : null,
+                points: data[i].points
+              });
+          }
+          // console.log(newData);
+          setSpecialData(newData);
+          
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      useEffect(() => {
+        if (token) {
+          fetchData();
+        }
+      }, [token]);
+    }
+  };
 
 
   const worshipperCorner = {
@@ -330,7 +362,7 @@ const specialPoints = {
 
   const flagTribute = {
       columns: [
-        { name: "RANK", uid: "rank", sortable: true },
+        { name: "RANK", uid: "user_id", sortable: true },
         { name: "NAME", uid: "name", sortable: true },
         { name: "POINTS", uid: "points"},
       ],
@@ -343,10 +375,13 @@ const specialPoints = {
               }
             });
             
-            var resultData = res.data;
-            const {data} = resultData;
+          const resultData = res.data;
+          const { data } = resultData;
+          data.map((item:any)=>{
+            item.user_id = item.user_id
+          });
 
-            setFlagTributeData(data);
+          setFlagTributeData(data);
             
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -375,12 +410,13 @@ const specialPoints = {
      
     <div className="grid grid-cols-3 gap-5">
       <div className="col-span-3">
-        <Card>
-          <CardBody className="flex inline-block">
+      <Card>
+          <CardBody className="inline-block">
           <CircleAnimatedIcon className="inline-block mr-2" />
           <span>Welcome to Balanghay Nine Masonic Lodge 493 Information System.</span>
           </CardBody>
-        </Card>
+      </Card>
+
       </div>
 
       <div className="col-span-2">
@@ -403,7 +439,11 @@ const specialPoints = {
 
             <DashBoardTableComponent
                 title="activity"
-                tableDatas={flagTributeData}
+                // tableDatas={flagTributeData}
+                tableDatas={flagTributeData.map(item => ({
+                  ...item,
+                  key: item.rank // or another unique property
+                }))}
                 columns={flagTribute.columns}
                 topContent="Flag Tribute"
             />
