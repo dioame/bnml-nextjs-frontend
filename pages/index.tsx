@@ -362,7 +362,7 @@ export default function IndexPage() {
 
   const flagTribute = {
       columns: [
-        { name: "RANK", uid: "user_id", sortable: true },
+        { name: "RANK", uid: "rank", sortable: true },
         { name: "NAME", uid: "name", sortable: true },
         { name: "POINTS", uid: "points"},
       ],
