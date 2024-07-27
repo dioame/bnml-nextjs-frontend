@@ -11,7 +11,7 @@ export const siteConfig = {
     },
     {
       label: "Activities",
-      key: "others",
+      key: "activities",
       dropDownItems: [
         {
           label: "Stated Meeting",
