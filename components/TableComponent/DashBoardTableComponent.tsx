@@ -92,10 +92,11 @@ export default function DashBoardTableComponent(
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback((data: TableDatas, columnKey: React.Key) => {
-    const cellValue = data[columnKey as keyof TableDatas];
+    const key = columnKey as string;
+    const cellValue = data[key as keyof TableDatas];
 
     const months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
-    if(months.includes(columnKey)){
+    if(months.includes(key)){
         if(cellValue){
           return <CheckIcon/>;
         }else{
@@ -113,7 +114,7 @@ export default function DashBoardTableComponent(
             <>
             {cellValue.map((value:any)=>{
               return (
-                <div className="gap-3">
+                <div key={value.index} className="gap-3">
                 <Chip
                   variant="shadow"
                   classNames={{

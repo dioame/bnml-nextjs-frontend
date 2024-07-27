@@ -8,11 +8,15 @@ import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 import { FileUpload } from 'primereact/fileupload';
 
+type ActivityData = {
+  data: any[];
+};
+
 export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRECTORY_ID}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
-  const [activityData, setActivityData] = useState([]);
+  const [activityData, setActivityData] = useState<ActivityData>({ data: [] });
   const [columTable, setColumnTable] = useState({});
   const [loading, setLoading] = useState(false);
   const [updateDataId, setUpdateDataId] = useState(null);
@@ -43,7 +47,8 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
     });
     const finalFormattedKeys = formattedKeys.concat({
       name: "ACTIONS",
-      uid: "actions"
+      uid: "actions",
+      sortable: false
     });
     return finalFormattedKeys;
   }
@@ -58,7 +63,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
       });
       
       var resultData = res.data;
-      const cleanedData = resultData.data.map(item => {
+      const cleanedData = resultData.data.map((item:any) => {
           const newItem = {...item}; // Create a copy of the item
           Object.keys(newItem).forEach(key => {
               if (key.endsWith('_id')) {
@@ -144,7 +149,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
   const handleChange = (event:any) => {
     const { name, value } = event.target;
     
-    setFormData((prevState) => ({
+    setFormData((prevState:any) => ({
       ...prevState,
       [name]: value,
     }));
@@ -255,7 +260,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
   }, [token]);
 
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e:any) => {
     const file = e.target.files[0];
     setFileNameInput(e.target.value)
     setFormData((prevState:any) => ({

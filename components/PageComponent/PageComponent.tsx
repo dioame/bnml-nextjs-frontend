@@ -9,11 +9,26 @@ import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 import { CircleAnimatedIcon } from "../animatedIcons";
 
+type User = {
+  id: string;
+  name: string;
+};
+
+type ActivityData = {
+  data: any[];
+};
+
+type Installation = {
+  id: string;
+  name: string;
+};
+
+
 export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
-  const [activityData, setActivityData] = useState([]);
+  const [activityData, setActivityData] = useState<ActivityData>({ data: [] });
   const [columTable, setColumnTable] = useState({});
   const [loading, setLoading] = useState(false);
   const [updateDataId, setUpdateDataId] = useState(null);
@@ -23,11 +38,10 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const [modalTitle, setModalTitle] = useState('Modal Title');
   const [pageStatus, setPageStatus] = useState(0);
 
-  const [searchUserTerm, setSearchUserTerm] = useState('');
-  const [searchUserValue, setSearchUserValue] = useState([]);
-
-  const [searchInstallationTerm, setSearchInstallationTerm] = useState('');
-  const [searchInstallationValue, setSearchInstallationValue] = useState([]);
+  const [searchUserTerm, setSearchUserTerm] = useState<string>('');
+  const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
+  const [searchInstallationTerm, setSearchInstallationTerm] = useState<string>('');
+  const [searchInstallationValue, setSearchInstallationValue] = useState<Installation[]>([]); 
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -46,7 +60,8 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     });
     const finalFormattedKeys = formattedKeys.concat({
       name: "ACTIONS",
-      uid: "actions"
+      uid: "actions",
+      sortable:false
     });
     return finalFormattedKeys;
   }
@@ -58,7 +73,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
       });
       
       var resultData = res.data;
-      const cleanedData = resultData.data.map(item => {
+      const cleanedData = resultData.data.map((item:any) => {
           const newItem = {...item}; // Create a copy of the item
           Object.keys(newItem).forEach(key => {
               if (key.endsWith('_id')) {
@@ -104,15 +119,16 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   }
 
   const  handleModalSave = async () =>{
-    
+    let url_api:string;
+
     if(updateDataId){
-      var url_api = `${_API_URL}/${updateDataId}`;
+      url_api = `${_API_URL}/${updateDataId}`;
       await axios.put(url_api, formData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
-      var url_api = _API_URL;
+      url_api = _API_URL;
       await axios.post(url_api, formData,{
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -129,7 +145,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const handleChange = (event:any) => {
     const { name, value } = event.target;
     
-    setFormData((prevState) => ({
+    setFormData((prevState:any) => ({
       ...prevState,
       [name]: value,
     }));

@@ -18,7 +18,7 @@ import {
   Pagination,
   Selection,
   ChipProps,
-  SortDescriptor,
+  SortDescriptor
 } from "@nextui-org/react";
 import DefaultLayout from "@/layouts/default";
 

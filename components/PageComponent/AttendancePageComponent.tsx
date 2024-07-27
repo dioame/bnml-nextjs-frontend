@@ -8,22 +8,32 @@ import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Modal, M
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
 
+type ActivityData = {
+  data: any[];
+};
+
+type User = {
+  id: string;
+  name: string;
+};
+
 export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTIVITY_ID}:any) {
 
   const [formData, setFormData] = useState(_FORM_FIELDS);
   const formFields = Object.keys(formData);
-  const [activityData, setActivityData] = useState([]);
-  const [columTable, setColumnTable] = useState({});
+  const [activityData, setActivityData] = useState<ActivityData>({ data: [] });
+  const [columnTable, setColumnTable] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
-  const [updateDataId, setUpdateDataId] = useState(null);
+  const [updateDataId, setUpdateDataId] = useState<string | null>(null); 
   const { data: session, status } = useSession();
   const token = session?.user?.token;
   const { isOpen, onOpen, onClose } = useDisclosure();  
   const [modalTitle, setModalTitle] = useState('Modal Title');
   const [pageStatus, setPageStatus] = useState(0);
 
-  const [searchUserTerm, setSearchUserTerm] = useState('');
-  const [searchUserValue, setSearchUserValue] = useState([]);
+  const [searchUserTerm, setSearchUserTerm] = useState<string>('');
+  const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
+
 
   const excludeColumns = ['created_at'];
   const formatColumns = (res:any) => {
@@ -53,7 +63,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
       });
       
       var resultData = res.data;
-      const cleanedData = resultData.data.map(item => {
+      const cleanedData = resultData.data.map((item:any) => {
           const newItem = {...item}; // Create a copy of the item
           Object.keys(newItem).forEach(key => {
               if (key.endsWith('_id')) {
@@ -104,15 +114,15 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
         user_id: formData.user_id,
         activity_id: _ACTIVITY_ID
     }
-    
+    let url_api:string;
     if(updateDataId){
-      var url_api = `${_API_URL}/${updateDataId}`;
+      url_api = `${_API_URL}/${updateDataId}`;
       await axios.put(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
 
     }else{
-      var url_api = _API_URL;
+      url_api = _API_URL;
       await axios.post(url_api, newData,{
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -128,7 +138,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
   const handleChange = (event:any) => {
     const { name, value } = event.target;
     
-    setFormData((prevState) => ({
+    setFormData((prevState:any) => ({
       ...prevState,
       [name]: value,
     }));
@@ -176,7 +186,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
         <AttendanceTableComponent 
         title="activity"
         tableDatas={activityData.data}
-        columns={columTable}
+        columns={columnTable}
         onAddNew={()=>{ handleOpen() }}
         onEditNew={(data:any)=>{ handleEditOpen(data) }}
         onDelete={(data:any)=>{ handleDelete(data)}}
