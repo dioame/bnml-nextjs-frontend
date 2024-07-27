@@ -114,7 +114,7 @@ export default function DashBoardTableComponent(
             <>
             {cellValue.map((value:any)=>{
               return (
-                <div className="gap-3">
+                <div key={value.index} className="gap-3">
                 <Chip
                   variant="shadow"
                   classNames={{
