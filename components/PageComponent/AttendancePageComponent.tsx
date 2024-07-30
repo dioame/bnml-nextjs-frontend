@@ -7,7 +7,8 @@ import AttendanceTableComponent from "@/components/TableComponent/AttendanceTabl
 import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import Swal from 'sweetalert2'
 import { PlusIcon } from "@/components/TableComponent/assets/PlusIcon";
-
+import { QRIcon } from "../icons";
+import { Link } from "@nextui-org/link";
 type ActivityData = {
   data: any[];
 };
@@ -226,6 +227,9 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
           <div className="flex gap-3">
             <Button color="primary" endContent={<PlusIcon />} onPress={() => handleOpen()}>
               Add New
+            </Button>
+            <Button color="warning" endContent={<QRIcon />} as={Link} href={`/attendance-qr-scanner?id=${_ACTIVITY_ID}`}>
+              Scan QR
             </Button>
           </div>
       </div>
