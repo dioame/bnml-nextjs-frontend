@@ -48,6 +48,7 @@ const [searchUserTerm, setSearchUserTerm] = useState<string>('');
 const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
 const [searchInstallationTerm, setSearchInstallationTerm] = useState<string>('');
 const [searchInstallationValue, setSearchInstallationValue] = useState<Installation[]>([]); 
+const [isSubmitting, setIsSubmitting] = useState(false);
   
 
   const formatColumns = (res:any) => {
@@ -139,6 +140,7 @@ const [searchInstallationValue, setSearchInstallationValue] = useState<Installat
   }
 
   const  handleModalSave = async () =>{
+    setIsSubmitting(true)
     // For start_date
     const { year: startYear, month: startMonth, day: startDay, hour: startHour, minute: startMinute, second: startSecond } = formData.start_date;
     const formattedStartDate = moment({ year: startYear, month: startMonth - 1, day: startDay, hour: startHour, minute: startMinute, second: startSecond }).format('YYYY-MM-DD HH:mm:ss');
@@ -148,6 +150,12 @@ const [searchInstallationValue, setSearchInstallationValue] = useState<Installat
     const formattedEndDate = moment({ year: endYear, month: endMonth - 1, day: endDay, hour: endHour, minute: endMinute, second: endSecond }).format('YYYY-MM-DD HH:mm:ss');
     // console.log(formattedStartDate); // Output: "2024-07-23 15:23:26"
     // console.log(formattedEndDate); // Output: "2024-07-23 15:23:26"
+
+    if (!formData.name || !formData.description || !formData.area) {
+      Swal.fire("Error", "Please fill all fields", "error");
+      setIsSubmitting(false)
+      return;
+    }
 
     const newFormData = {
         lib_activity_id: _ACTIVITY_ID,
@@ -177,6 +185,7 @@ const [searchInstallationValue, setSearchInstallationValue] = useState<Installat
     onClose();
     setSearchUserTerm('')
     setSearchInstallationTerm('')
+    setIsSubmitting(false)
   }
 
 
@@ -390,7 +399,7 @@ const [searchInstallationValue, setSearchInstallationValue] = useState<Installat
         }
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onPress={handleModalSave}>
+        <Button color="primary" onPress={handleModalSave} isDisabled={isSubmitting}>
             Save
         </Button>
         <Button color="danger" variant="light" onPress={onClose}>

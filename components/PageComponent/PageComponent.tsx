@@ -42,6 +42,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
   const [searchInstallationTerm, setSearchInstallationTerm] = useState<string>('');
   const [searchInstallationValue, setSearchInstallationValue] = useState<Installation[]>([]); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -119,7 +120,10 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
   }
 
   const  handleModalSave = async () =>{
+    setIsSubmitting(true);
     let url_api:string;
+
+
 
     if(updateDataId){
       url_api = `${_API_URL}/${updateDataId}`;
@@ -139,6 +143,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
     onClose();
     setSearchUserTerm('')
     setSearchInstallationTerm('')
+    setIsSubmitting(false);
   }
 
 
@@ -357,7 +362,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL}:any)
         }
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onPress={handleModalSave}>
+      <Button color="primary" onPress={handleModalSave} isDisabled={isSubmitting}>
             Save
         </Button>
         <Button color="danger" variant="light" onPress={onClose}>

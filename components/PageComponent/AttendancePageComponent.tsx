@@ -34,6 +34,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
 
   const [searchUserTerm, setSearchUserTerm] = useState<string>('');
   const [searchUserValue, setSearchUserValue] = useState<User[]>([]); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const excludeColumns = ['created_at'];
@@ -110,6 +111,13 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
   }
 
   const  handleModalSave = async () =>{
+    setIsSubmitting(true)
+
+    if (!formData.user_id) {
+      Swal.fire("Error", "Please fill all fields", "error");
+      setIsSubmitting(false)
+      return;
+    }
 
     const newData = {
         user_id: formData.user_id,
@@ -133,6 +141,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
     fetchData()
     onClose();
     setSearchUserTerm('')
+    setIsSubmitting(false)
   }
 
 
@@ -317,7 +326,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_ACTI
         }
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onPress={handleModalSave}>
+      <Button color="primary" onPress={handleModalSave} isDisabled={isSubmitting}>
             Save
         </Button>
         <Button color="danger" variant="light" onPress={onClose}>
