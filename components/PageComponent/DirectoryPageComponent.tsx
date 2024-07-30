@@ -29,6 +29,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
   const [searchTerm, setSearchTerm] = useState('');
   const [searchValue, setSearchValue] = useState([]);
   const [fileNameInput, setFileNameInput] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formatColumns = (res:any) => {
     const { data } = res;
@@ -109,9 +110,16 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
   }
 
   const  handleModalSave = async () =>{
+    setIsSubmitting(true);
+
+    if (!formData.name || !formData.description || !formData.file) {
+      Swal.fire("Error", "Please fill all fields", "error");
+      setIsSubmitting(false)
+      return;
+    }
 
     const _formData = new FormData();
-
+    
       _formData.append('file_id', _DIRECTORY_ID);
       _formData.append('name', formData.name);
       _formData.append('description', formData.description);
@@ -144,6 +152,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
     setSearchTerm('')
     setFileNameInput('')
     setFormData(_FORM_FIELDS)
+    setIsSubmitting(false);
   }
 
   const handleChange = (event:any) => {
@@ -313,7 +322,7 @@ export default function({_API_URL,_PAGE_NAME,_FORM_FIELDS,_SEARCH_TERM_URL,_DIRE
         }
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onPress={handleModalSave}>
+      <Button color="primary" onPress={handleModalSave} isDisabled={isSubmitting}>
             Save
         </Button>
         <Button color="danger" variant="light" onPress={onClose}>
