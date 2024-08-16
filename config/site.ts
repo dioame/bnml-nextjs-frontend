@@ -115,6 +115,12 @@ export const siteConfig = {
           description: "Petitioners",
           key: "petitioners"
         },
+        {
+          label: "Users",
+          href: "/users",
+          description: "Users",
+          key: "users"
+        },
       ]
     },
   ],

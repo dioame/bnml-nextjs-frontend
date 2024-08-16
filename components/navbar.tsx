@@ -70,20 +70,10 @@ export const Navbar = () => {
             <NextLink className="flex justify-start items-center gap-1" href="/">
             {/* ----------- */}
             <Image
-              width={40}
+              width={60}
               alt="BNML Logo"
               src="/assets/bnml_logo.jpg"
             />
-              <p className="font-bold text-inherit">
-              <svg width="200" height="50" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="100%" height="100%" fill="#f5f5f5"/>
-                  
-                  <text x="50%" y="50%" fontFamily="Arial, sans-serif" fontSize="40" fill="#333" textAnchor="middle" alignmentBaseline="central">
-                    BNML
-                  </text>
-                  <line x1="20" y1="80" x2="180" y2="80" stroke="#333" strokeWidth="2" strokeDasharray="5,5"/>
-                </svg>
-              </p>
             </NextLink>
           </NavbarBrand>
           
